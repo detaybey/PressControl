@@ -44,25 +44,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs">
+    <Compile Include="Forms\App.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="App.Designer.cs">
+    <Compile Include="Forms\App.Designer.cs">
       <DependentUpon>App.cs</DependentUpon>
     </Compile>
-    <Compile Include="Graph.cs">
+    <Compile Include="%40Classes\Graph.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Graph.Designer.cs">
+    <Compile Include="%40Classes\Graph.Designer.cs">
       <DependentUpon>Graph.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewForm.Designer.cs">
+      <DependentUpon>NewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="App.resx">
+    <Compile Include="%40Classes\TestForm.cs" />
+    <EmbeddedResource Include="Forms\App.resx">
       <DependentUpon>App.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Graph.resx">
+    <EmbeddedResource Include="%40Classes\Graph.resx">
       <DependentUpon>Graph.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewForm.resx">
+      <DependentUpon>NewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -89,6 +99,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\background.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\background-light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ToggleButton\ToggleButton.csproj">
+      <Project>{150CBD4B-BDD7-4965-91F6-046C75E8FFF2}</Project>
+      <Name>ToggleButton</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

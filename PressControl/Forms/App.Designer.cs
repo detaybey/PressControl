@@ -60,7 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 33);
+            this.label1.Location = new System.Drawing.Point(19, 36);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
             this.label1.TabIndex = 3;
@@ -69,7 +69,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 266);
+            this.label2.Location = new System.Drawing.Point(20, 269);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 4;
@@ -123,6 +123,7 @@
             this.yeniToolStripMenuItem.Name = "yeniToolStripMenuItem";
             this.yeniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yeniToolStripMenuItem.Text = "Yeni";
+            this.yeniToolStripMenuItem.Click += new System.EventHandler(this.yeniToolStripMenuItem_Click);
             // 
             // yukleToolStripMenuItem
             // 
@@ -153,7 +154,7 @@
             // hakkindaToolStripMenuItem
             // 
             this.hakkindaToolStripMenuItem.Name = "hakkindaToolStripMenuItem";
-            this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.hakkindaToolStripMenuItem.Text = "Hakkinda";
             // 
             // App

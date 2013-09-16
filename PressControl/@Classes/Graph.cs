@@ -23,6 +23,7 @@ namespace PressControl
         public Pen DataPen { get; set; }
         public Pen ThinnestPen { get; set; }
 
+        public DataForm DataForm { get; set; }
   
         public Graph()
         {
@@ -32,7 +33,7 @@ namespace PressControl
             BorderPen = new Pen(Color.Gray);
             ThinPen = new Pen(Color.LightGray);
             ThinnestPen = new Pen(Color.FromArgb(100, 210, 210, 210));
-            DataPen = new Pen(Color.DarkOrange);
+            DataPen = new Pen(Color.DarkOrange, 2f);
             MiniFont = new Font("Tahoma", 8);
             Brush = new SolidBrush(Color.Black);
             BgBrush = new SolidBrush(Color.White);
@@ -65,15 +66,21 @@ namespace PressControl
             }
 
             pe.Graphics.DrawRectangle(BorderPen, new Rectangle(0, 0, this.Width-1, this.Height-1));
-        
+
+            if (this.DataForm == null)
+            {
+                return;
+            }
+         
+            var prev = new Point(X1, H1 / 2);
+            for (var x = X1; x < X2; x += 1)
+            {
+                var y = Convert.ToInt32(this.DataForm.GetValue(x));
+                pe.Graphics.DrawLine(DataPen, prev, new Point(x, y));
+                prev = new Point(x, y);
+            }
         }
     }
 
-    public enum Type
-    {
-        Square,
-        Triangle,
-        Sawtooth
-    }
 
 }
