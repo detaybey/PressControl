@@ -90,7 +90,7 @@
             this.toggleButton1.Size = new System.Drawing.Size(74, 77);
             this.toggleButton1.TabIndex = 0;
             this.toggleButton1.Text = "toggleButton1";
-            this.toggleButton1.Type = ToggleButton.Type.Saw;
+            this.toggleButton1.Type = ToggleButton.Type.SawTooth;
             this.toggleButton1.UseMnemonic = false;
             this.toggleButton1.UseVisualStyleBackColor = false;
             this.toggleButton1.Click += new System.EventHandler(this.toggleButton1_Click);

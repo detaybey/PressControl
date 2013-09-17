@@ -25,18 +25,20 @@ namespace PressControl
             float t = Frequency * time + phase;
             switch (Type)
             {
-                // sign( sin( 2 * pi * t ) )
-                case SignalType.Square:                     
+
+                case SignalType.Sine: // sin( 2 * pi * t )
+                    value = (float)Math.Sin(2f * Math.PI * t);
+                    break;
+                case SignalType.Square: // sign( sin( 2 * pi * t ) )
                     value = Math.Sign(Math.Sin(2f * Math.PI * t));
                     break;
-                // 2 * abs( t - 2 * floor( t / 2 ) - 1 ) - 1
-                case SignalType.Triangle:
+                case SignalType.Triangle: // 2 * abs( t - 2 * floor( t / 2 ) - 1 ) - 1
                     value = 1f - 4f * (float)Math.Abs(Math.Round(t - 0.25f) - (t - 0.25f));
                     break;
-                // 2 * ( t/a - floor( t/a + 1/2 ) )
-                case SignalType.Saw:
+                case SignalType.Sawtooth: // 2 * ( t/a - floor( t/a + 1/2 ) )
                     value = 2f * (t - (float)Math.Floor(t + 0.5f));
                     break;
+
             }
             return (invert * amplitude * value + offset);
         }
@@ -44,7 +46,8 @@ namespace PressControl
 
     public enum SignalType
     {
-        Saw = 1,
+        Sine= 0,
+        Sawtooth = 1,
         Triangle = 2,
         Square = 3,
     }

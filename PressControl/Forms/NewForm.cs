@@ -75,7 +75,7 @@ namespace PressControl
             };
             if (toggleButton1.IsOn)
             {
-                dataform.Type = SignalType.Saw;
+                dataform.Type = SignalType.Sawtooth;
             }
             if (toggleButton2.IsOn)
             {
@@ -85,6 +85,7 @@ namespace PressControl
             {
                 dataform.Type = SignalType.Square;
             }
+            dataform.Type = SignalType.Sine;
             App.SetDataForm(dataform);
             this.Close();
         }

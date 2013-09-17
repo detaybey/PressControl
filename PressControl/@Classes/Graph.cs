@@ -76,8 +76,8 @@ namespace PressControl
             for (var x = X1; x < X2; x += 1)
             {
                 var y = Convert.ToInt32(this.DataForm.GetValue(x));
-                pe.Graphics.DrawLine(DataPen, prev, new Point(x, y));
-                prev = new Point(x, y);
+                pe.Graphics.DrawLine(DataPen, new Point(0, 0), new Point(x, y));
+             
             }
         }
     }

@@ -38,7 +38,7 @@ namespace ToggleButton
             this.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.FlatAppearance.CheckedBackColor = System.Drawing.Color.Transparent;
             //this.Click += new System.EventHandler(this.ButtonClick);
-            this.type = ToggleButton.Type.Saw;
+            this.type = ToggleButton.Type.SawTooth;
             this.MouseHover += toggleButton_MouseHover;
             this.MouseEnter += toggleButton_MouseEnter;
         }
@@ -68,7 +68,7 @@ namespace ToggleButton
             var name = "";
             switch (this.type)
             {
-                case ToggleButton.Type.Saw:
+                case ToggleButton.Type.SawTooth:
                     name = "saw";
                     break;
                 case ToggleButton.Type.Square:
@@ -92,7 +92,7 @@ namespace ToggleButton
 
     public enum Type
     {
-        Saw = 1,
+        SawTooth = 1,
         Triangle = 2,
         Square = 3,
     }
