@@ -30,12 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(App));
-            this.button1 = new System.Windows.Forms.Button();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.graph2 = new PressControl.Graph();
-            this.graph1 = new PressControl.Graph();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dosyaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yeniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,18 +41,14 @@
             this.cikisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yardimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hakkindaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.graph2 = new PressControl.Graph();
+            this.graph1 = new PressControl.Graph();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(11, 494);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -74,26 +67,6 @@
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "OLCULEN";
-            // 
-            // graph2
-            // 
-            this.graph2.Base = null;
-            this.graph2.Location = new System.Drawing.Point(11, 282);
-            this.graph2.MiniFont = new System.Drawing.Font("Tahoma", 8F);
-            this.graph2.Name = "graph2";
-            this.graph2.Origin = new System.Drawing.Point(0, 0);
-            this.graph2.Size = new System.Drawing.Size(720, 191);
-            this.graph2.TabIndex = 2;
-            // 
-            // graph1
-            // 
-            this.graph1.Base = null;
-            this.graph1.Location = new System.Drawing.Point(11, 49);
-            this.graph1.MiniFont = new System.Drawing.Font("Tahoma", 8F);
-            this.graph1.Name = "graph1";
-            this.graph1.Origin = new System.Drawing.Point(0, 0);
-            this.graph1.Size = new System.Drawing.Size(720, 204);
-            this.graph1.TabIndex = 1;
             // 
             // menuStrip1
             // 
@@ -121,26 +94,26 @@
             // yeniToolStripMenuItem
             // 
             this.yeniToolStripMenuItem.Name = "yeniToolStripMenuItem";
-            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.yeniToolStripMenuItem.Text = "Yeni";
             this.yeniToolStripMenuItem.Click += new System.EventHandler(this.yeniToolStripMenuItem_Click);
             // 
             // yukleToolStripMenuItem
             // 
             this.yukleToolStripMenuItem.Name = "yukleToolStripMenuItem";
-            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.yukleToolStripMenuItem.Text = "Yukle";
             // 
             // kaydetToolStripMenuItem
             // 
             this.kaydetToolStripMenuItem.Name = "kaydetToolStripMenuItem";
-            this.kaydetToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.kaydetToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.kaydetToolStripMenuItem.Text = "Kaydet";
             // 
             // cikisToolStripMenuItem
             // 
             this.cikisToolStripMenuItem.Name = "cikisToolStripMenuItem";
-            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.cikisToolStripMenuItem.Text = "Cikis";
             // 
             // yardimToolStripMenuItem
@@ -157,6 +130,44 @@
             this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.hakkindaToolStripMenuItem.Text = "Hakkinda";
             // 
+            // graph2
+            // 
+            this.graph2.Base = null;
+            this.graph2.DataForm = null;
+            this.graph2.Location = new System.Drawing.Point(11, 282);
+            this.graph2.MiniFont = new System.Drawing.Font("Tahoma", 8F);
+            this.graph2.Name = "graph2";
+            this.graph2.Origin = new System.Drawing.Point(0, 0);
+            this.graph2.Size = new System.Drawing.Size(720, 191);
+            this.graph2.TabIndex = 2;
+            // 
+            // graph1
+            // 
+            this.graph1.Base = null;
+            this.graph1.DataForm = null;
+            this.graph1.Location = new System.Drawing.Point(11, 49);
+            this.graph1.MiniFont = new System.Drawing.Font("Tahoma", 8F);
+            this.graph1.Name = "graph1";
+            this.graph1.Origin = new System.Drawing.Point(0, 0);
+            this.graph1.Size = new System.Drawing.Size(720, 204);
+            this.graph1.TabIndex = 1;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(13, 490);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 6;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(149, 490);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown2.TabIndex = 7;
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -165,11 +176,12 @@
             this.BackColor = System.Drawing.SystemColors.Window;
             this.BackgroundImage = global::PressControl.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(743, 530);
+            this.Controls.Add(this.numericUpDown2);
+            this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.graph2);
             this.Controls.Add(this.graph1);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -179,6 +191,8 @@
             this.Text = "UMPC v1.0";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,7 +200,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
         private System.IO.Ports.SerialPort serialPort1;
         private Graph graph1;
         private Graph graph2;
@@ -200,6 +213,8 @@
         private System.Windows.Forms.ToolStripMenuItem cikisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yardimToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hakkindaToolStripMenuItem;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
 
     }
 }

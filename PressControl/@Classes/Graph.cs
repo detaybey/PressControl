@@ -11,20 +11,31 @@ using System.Windows.Forms;
 namespace PressControl
 {
     public partial class Graph : UserControl
-    {     
-        public Point Origin { get; set; }      
+    {
+        public Point Origin { get; set; }
         public App Base { get; set; }
         public Font MiniFont { get; set; }
         public Brush Brush { get; set; }
         public Brush BgBrush { get; set; }
-
+        public Brush DataBrush { get; set; }
         public Pen BorderPen { get; set; }
         public Pen ThinPen { get; set; }
         public Pen DataPen { get; set; }
         public Pen ThinnestPen { get; set; }
+        public Pen TimePen { get; set; }
+        public Brush CursorPen { get; set; }
 
         public DataForm DataForm { get; set; }
-  
+
+        public Timer Timer { get; set; }
+        public int X1 = 30;
+        public int DataXOffset = 0;
+        public int DataYOffset = 0;
+        public DateTime startTime;
+        public DateTime endTime;
+        public TimeSpan ts_timeElapsed;
+        public PointF timerPoint;
+
         public Graph()
         {
             InitializeComponent();
@@ -33,21 +44,47 @@ namespace PressControl
             BorderPen = new Pen(Color.Gray);
             ThinPen = new Pen(Color.LightGray);
             ThinnestPen = new Pen(Color.FromArgb(100, 210, 210, 210));
-            DataPen = new Pen(Color.DarkOrange, 2f);
+            DataPen = new Pen(Color.LightGreen, 2f);
             MiniFont = new Font("Tahoma", 8);
             Brush = new SolidBrush(Color.Black);
             BgBrush = new SolidBrush(Color.White);
-      
+            DataBrush = new SolidBrush(Color.LightGreen);
+            TimePen = new Pen(Color.Red);
+            CursorPen = new SolidBrush(Color.Orange);
+
+            Timer = new Timer();
+            Timer.Interval = 30;
+            Timer.Tick += Timer_Tick;
+            Timer.Start();
+            startTime = DateTime.Now;
+            timerPoint = new PointF(this.Width - 50, this.Height - 8);
+        }
+
+        void Timer_Tick(object sender, EventArgs e)
+        {
+            if (this.DataForm == null)
+            {
+                return;
+            }
+            DataXOffset = DataXOffset + 1;
+            if (DataXOffset > this.Width - 20)
+            {
+                DataXOffset = 0;
+                startTime = DateTime.Now;
+            }
+            DataYOffset = Convert.ToInt32(this.DataForm.GetValue(DataXOffset));
+            endTime = DateTime.Now;
+            ts_timeElapsed = (endTime - startTime);
+            this.Refresh();
         }
 
         protected override void OnPaint(PaintEventArgs pe)
         {
             // Calling the base class OnPaint
             base.OnPaint(pe);
-            var X1 = 30;
             var X2 = this.Width - 1;
             var Y1 = 1;
-            var H1 = this.Height-2;
+            var H1 = this.Height - 2;
 
             pe.Graphics.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
 
@@ -65,20 +102,30 @@ namespace PressControl
                 pe.Graphics.DrawLine(ThinnestPen, new Point(j, Y1), new Point(j, Y1 + H1));
             }
 
-            pe.Graphics.DrawRectangle(BorderPen, new Rectangle(0, 0, this.Width-1, this.Height-1));
+            pe.Graphics.DrawRectangle(BorderPen, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
 
             if (this.DataForm == null)
             {
                 return;
             }
-         
-            var prev = new Point(X1, H1 / 2);
-            for (var x = X1; x < X2; x += 1)
+
+            int x0 = X1;
+            int y0 = Y1 + (H1 / 2);
+            for (float x = X1; x <= X2; x += 0.25f)
             {
-                var y = Convert.ToInt32(this.DataForm.GetValue(x));
-                pe.Graphics.DrawLine(DataPen, new Point(0, 0), new Point(x, y));
-             
+                var y = Y1 + (H1 / 2) + Convert.ToInt32(this.DataForm.GetValue(x - X1));
+                //                pe.Graphics.FillRectangle(DataBrush, x, y, 1, 1);
+                pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
+                x0 = Convert.ToInt16(x);
+                y0 = y;
             }
+
+            pe.Graphics.DrawLine(TimePen, DataXOffset + X1, 0, DataXOffset + X1, H1);
+            pe.Graphics.FillEllipse(CursorPen, DataXOffset + X1-5, DataYOffset+ (H1/2)-5, 10, 10);
+
+            pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
+            pe.Graphics.DrawString((-1 * DataYOffset).ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
+
         }
     }
 

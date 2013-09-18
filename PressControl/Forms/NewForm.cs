@@ -70,8 +70,8 @@ namespace PressControl
         {
             var dataform = new DataForm()
             {
-                Frequency = Convert.ToInt16(numericUpDown1.Value),
-                Interval = Convert.ToInt16(numericUpDown2.Value),
+                Interval = Convert.ToInt16(numericUpDown1.Value),
+                Amplitude = Convert.ToInt16(numericUpDown2.Value),
             };
             if (toggleButton1.IsOn)
             {
@@ -85,7 +85,7 @@ namespace PressControl
             {
                 dataform.Type = SignalType.Square;
             }
-            dataform.Type = SignalType.Sine;
+            // dataform.Type = SignalType.Sine;
             App.SetDataForm(dataform);
             this.Close();
         }
