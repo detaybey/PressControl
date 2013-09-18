@@ -12,7 +12,6 @@ namespace PressControl
 {
     public partial class Graph : UserControl
     {
-        public Point Origin { get; set; }
         public App Base { get; set; }
         public Font MiniFont { get; set; }
         public Brush Brush { get; set; }
@@ -91,13 +90,13 @@ namespace PressControl
             // middle line
             pe.Graphics.DrawLine(ThinPen, new Point(X1, Y1 + (H1 / 2)), new Point(X2, Y1 + (H1 / 2)));
             // left labels
-            pe.Graphics.DrawString("+100", MiniFont, Brush, new Point(X1 - 30, Y1));
+            pe.Graphics.DrawString("-100", MiniFont, Brush, new Point(X1 - 30, Y1));
             pe.Graphics.DrawString("0", MiniFont, Brush, new Point(X1 - 15, Y1 + (H1 / 2) - 7));
-            pe.Graphics.DrawString("-100", MiniFont, Brush, new Point(X1 - 28, Y1 + H1 - 14));
+            pe.Graphics.DrawString("+100", MiniFont, Brush, new Point(X1 - 28, Y1 + H1 - 14));
             // ticks on timeline
-            for (var j = X1; j < X2; j = j + 5)
+            for (var j = X1; j < X2; j = j + Timer.Interval/5)
             {
-                var tickSize = (j % 25 == 0) ? 5 : 2;
+                var tickSize = (j % Timer.Interval == 0) ? 9 : 2;
                 pe.Graphics.DrawLine(ThinPen, new Point(j, Y1 + (H1 / 2) - tickSize), new Point(j, Y1 + (H1 / 2) + tickSize));
                 pe.Graphics.DrawLine(ThinnestPen, new Point(j, Y1), new Point(j, Y1 + H1));
             }
@@ -124,7 +123,7 @@ namespace PressControl
             pe.Graphics.FillEllipse(CursorPen, DataXOffset + X1-5, DataYOffset+ (H1/2)-5, 10, 10);
 
             pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
-            pe.Graphics.DrawString((-1 * DataYOffset).ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
+            pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
 
         }
     }

@@ -137,7 +137,6 @@
             this.graph2.Location = new System.Drawing.Point(11, 282);
             this.graph2.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph2.Name = "graph2";
-            this.graph2.Origin = new System.Drawing.Point(0, 0);
             this.graph2.Size = new System.Drawing.Size(720, 191);
             this.graph2.TabIndex = 2;
             // 
@@ -148,7 +147,6 @@
             this.graph1.Location = new System.Drawing.Point(11, 49);
             this.graph1.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph1.Name = "graph1";
-            this.graph1.Origin = new System.Drawing.Point(0, 0);
             this.graph1.Size = new System.Drawing.Size(720, 204);
             this.graph1.TabIndex = 1;
             // 

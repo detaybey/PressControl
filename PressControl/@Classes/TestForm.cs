@@ -10,11 +10,6 @@ namespace PressControl
 
     public class DataForm
     {
-        private float frequency = -1;
-        private float phase = 0f;
-        private float invert = 1; // Yes=-1, No=1
-        private float offset = 0f;
-
         public int Interval { get; set; }
         public int Amplitude { get; set; }
 
@@ -22,7 +17,7 @@ namespace PressControl
         {
             get
             {
-                return 0.001f * this.Interval; 
+                return 0.001f * (this.Interval); 
             }
         }
 
@@ -31,7 +26,7 @@ namespace PressControl
         public float GetValue(float time)
         {
 
-            float t = Frequency * time + phase;
+            float t = Frequency * time;
             float value = 0f;
             switch (Type)
             {
