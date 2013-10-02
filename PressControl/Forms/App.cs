@@ -14,20 +14,24 @@ namespace PressControl
 
     public partial class App : Form
     {
-        public DataForm TestForm { get; set; }
+        public bool Loop { get; set; }
+        public bool Playing { get; set; }
+
+
         public NewForm NewForm { get; set; }
 
         public App()
         {
             InitializeComponent();
             NewForm = new NewForm(this);
+ 
+            this.Playing = false;
+            this.Loop = false;
         }
 
-        public void SetDataForm(DataForm form)
+        public void SetDataForm(WaveSegment segment)
         {
-            graph1.DataForm = form;
-            numericUpDown1.Value = form.Interval;
-            numericUpDown2.Value = form.Amplitude;
+            graph1.Waves.Add(segment);
             graph1.Refresh();
         }
 
@@ -41,16 +45,39 @@ namespace PressControl
             NewForm.ShowDialog(this);
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+
+        private void btnPlay_Click(object sender, EventArgs e)
         {
-            graph1.DataForm.Interval = Convert.ToInt16(numericUpDown1.Value);
-            graph1.Refresh();
+            this.Playing = true;
+            this.Loop = false;
+            btnPlay.IsOn = true;
+            btnPause.IsOn = false;
+            btnPlayLoop.IsOn = false;
         }
 
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
+        private void btnPlayLoop_Click(object sender, EventArgs e)
         {
-            graph1.DataForm.Amplitude = Convert.ToInt16(numericUpDown2.Value);
-            graph1.Refresh();
+            this.Playing = true;
+            this.Loop = true;
+            btnPlay.IsOn = false;
+            btnPause.IsOn = false;
+            btnPlayLoop.IsOn = true;
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
+        {
+            this.Playing = false;
+            btnPlay.IsOn = false;
+            btnPause.IsOn = true;
+            btnPlayLoop.IsOn = false;
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            this.Playing = false;
+            btnPlay.IsOn = false;
+            btnPause.IsOn = false;
+            btnPlayLoop.IsOn = false;
         }
     }
 

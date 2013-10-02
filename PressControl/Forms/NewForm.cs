@@ -20,27 +20,6 @@ namespace PressControl
             InitializeComponent();
         }
 
-        private void toggleButton1_Click(object sender, EventArgs e)
-        {
-            toggleButton1.IsOn = true;
-            toggleButton2.IsOn = false;
-            toggleButton3.IsOn = false;
-        }
-
-        private void toggleButton2_Click(object sender, EventArgs e)
-        {
-            toggleButton1.IsOn = false;
-            toggleButton2.IsOn = true;
-            toggleButton3.IsOn = false;
-        }
-
-        private void toggleButton3_Click(object sender, EventArgs e)
-        {
-            toggleButton1.IsOn = false;
-            toggleButton2.IsOn = false;
-            toggleButton3.IsOn = true;
-        }
-
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -68,25 +47,8 @@ namespace PressControl
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var dataform = new DataForm()
-            {
-                Interval = Convert.ToInt16(numericUpDown1.Value),
-                Amplitude = Convert.ToInt16(numericUpDown2.Value),
-            };
-            if (toggleButton1.IsOn)
-            {
-                dataform.Type = SignalType.Sawtooth;
-            }
-            if (toggleButton2.IsOn)
-            {
-                dataform.Type = SignalType.Triangle;
-            }
-            if (toggleButton3.IsOn)
-            {
-                dataform.Type = SignalType.Square;
-            }
-            // dataform.Type = SignalType.Sine;
-            App.SetDataForm(dataform);
+            var segment = new WaveSegment(trackBar2.Value, trackBar3.Value, trackBar1.Value);
+            this.App.SetDataForm(segment);            
             this.Close();
         }
 
@@ -95,6 +57,20 @@ namespace PressControl
             this.Close();
         }
 
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            numericUpDown3.Value = trackBar3.Value;
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            trackBar3.Value = Convert.ToInt32(numericUpDown3.Value);
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
  
     }
 }
