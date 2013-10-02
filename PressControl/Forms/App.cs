@@ -32,6 +32,7 @@ namespace PressControl
         public void SetDataForm(WaveSegment segment)
         {
             graph1.Waves.Add(segment);
+            graph1.WaveData.AddRange(segment.Data);
             graph1.Refresh();
         }
 
@@ -53,6 +54,7 @@ namespace PressControl
             btnPlay.IsOn = true;
             btnPause.IsOn = false;
             btnPlayLoop.IsOn = false;
+            graph1.Start();
         }
 
         private void btnPlayLoop_Click(object sender, EventArgs e)
@@ -62,6 +64,7 @@ namespace PressControl
             btnPlay.IsOn = false;
             btnPause.IsOn = false;
             btnPlayLoop.IsOn = true;
+            graph1.Start();
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -70,6 +73,7 @@ namespace PressControl
             btnPlay.IsOn = false;
             btnPause.IsOn = true;
             btnPlayLoop.IsOn = false;
+            graph1.Stop();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -78,6 +82,7 @@ namespace PressControl
             btnPlay.IsOn = false;
             btnPause.IsOn = false;
             btnPlayLoop.IsOn = false;
+            graph1.Stop();
         }
     }
 

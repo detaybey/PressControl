@@ -34,12 +34,14 @@ namespace PressControl
         public PointF timerPoint;
 
         public List<WaveSegment> Waves { get; set; }
-    
+        public List<Double> WaveData { get; set; }
+
         public Graph()
         {
             InitializeComponent();
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             Waves = new List<WaveSegment>();
+            WaveData = new List<double>();
             BorderPen = new Pen(Color.Gray);
             ThinPen = new Pen(Color.LightGray);
             ThinnestPen = new Pen(Color.FromArgb(100, 210, 210, 210));
@@ -54,26 +56,37 @@ namespace PressControl
             Timer = new Timer();
             Timer.Interval = 20;
             Timer.Tick += Timer_Tick;
-            Timer.Start();
             startTime = DateTime.Now;
             timerPoint = new PointF(this.Width - 50, this.Height - 8);
         }
 
+        public void Start()
+        {
+            Timer.Start();
+        }
+
+        public void Stop()
+        {
+            Timer.Stop();
+        }
+
         void Timer_Tick(object sender, EventArgs e)
         {
-            //if (this.DataForm == null)
-            //{
-            //    return;
-            //}
-            //DataXOffset = DataXOffset + 1;
-            //if (DataXOffset > this.Width - 20)
-            //{
-            //    DataXOffset = 0;
-            //    startTime = DateTime.Now;
-            //}
-            //DataYOffset = Convert.ToInt32(this.DataForm.GetValue(DataXOffset));
-            //endTime = DateTime.Now;
-            //ts_timeElapsed = (endTime - startTime);
+            if (this.Waves.Count==0)
+            {
+                return;
+            }
+            var maxX = this.WaveData.Count;
+
+            DataXOffset = DataXOffset + 1;
+            if (DataXOffset >= maxX)
+            {
+                DataXOffset = 0;
+                startTime = DateTime.Now;
+            }
+            DataYOffset = Convert.ToInt32(this.WaveData[DataXOffset]);
+            endTime = DateTime.Now;
+            ts_timeElapsed = (endTime - startTime);
             this.Refresh();
         }
 
@@ -108,37 +121,35 @@ namespace PressControl
                 return;
             }
 
-
             int x0 = X1;
             int y0 = Y1 + (H1 / 2);
            
-            foreach(var segment in this.Waves)
-            {
-                foreach(var value in segment.Data)
-                {
-                    var x = x0 + 1;
-                    var y = Convert.ToInt16(Y1 + (H1 / 2) - value);
-                    pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
-                    x0 = Convert.ToInt16(x);
-                    y0 = y;
-                }
-            }
-
-
-            //for (float x = X1; x <= X2; x += 0.25f)
+            //foreach(var segment in this.Waves)
             //{
-            //    var y = Y1 + (H1 / 2) + Convert.ToInt32(this.DataForm.GetValue(x - X1));
-            //    //                pe.Graphics.FillRectangle(DataBrush, x, y, 1, 1);
-            //    pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
-            //    x0 = Convert.ToInt16(x);
-            //    y0 = y;
+            //    foreach(var value in segment.Data)
+            //    {
+            //        var x = x0 + 1;
+            //        var y = Convert.ToInt16(Y1 + (H1 / 2) - value);
+            //        pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
+            //        x0 = Convert.ToInt16(x);
+            //        y0 = y;
+            //    }
             //}
 
-            //pe.Graphics.DrawLine(TimePen, DataXOffset + X1, 0, DataXOffset + X1, H1);
-            //pe.Graphics.FillEllipse(CursorPen, DataXOffset + X1 - 5, DataYOffset + (H1 / 2) - 5, 10, 10);
+            foreach (var value in this.WaveData)
+            {
+                var x = x0 + 1;
+                var y = Convert.ToInt16(Y1 + (H1 / 2) - value);
+                pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
+                x0 = Convert.ToInt16(x);
+                y0 = y;
+            }
 
-            //pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
-            //pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
+            pe.Graphics.DrawLine(TimePen, DataXOffset + X1, 0, DataXOffset + X1, H1);
+            pe.Graphics.FillEllipse(CursorPen, DataXOffset + X1 - 5, (H1 / 2) - 5 - DataYOffset, 10, 10);
+
+            pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
+            pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
 
         }
     }
