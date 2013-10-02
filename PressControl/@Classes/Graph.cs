@@ -26,7 +26,7 @@ namespace PressControl
 
         public Timer Timer { get; set; }
         public int X1 = 30;
-        public int DataXOffset = 0;
+        public double DataXOffset = 0;
         public int DataYOffset = 0;
         public DateTime startTime;
         public DateTime endTime;
@@ -60,14 +60,31 @@ namespace PressControl
             timerPoint = new PointF(this.Width - 50, this.Height - 8);
         }
 
+        public void SetBase(App app)
+        {
+            this.Base = app;
+        }
+
         public void Start()
         {
+            startTime = DateTime.Now;
+            if (this.WaveData.Count == 0)
+            {
+                return;
+            }
             Timer.Start();
+        }
+
+        public void Pause()
+        {
+            Timer.Stop();
         }
 
         public void Stop()
         {
-            Timer.Stop();
+            this.DataXOffset = 0;
+            this.Refresh();       
+            Timer.Stop();             
         }
 
         void Timer_Tick(object sender, EventArgs e)
@@ -83,8 +100,13 @@ namespace PressControl
             {
                 DataXOffset = 0;
                 startTime = DateTime.Now;
+                if (!Base.Loop)
+                {
+                    Stop();
+                    this.Base.Playing = false;
+                }
             }
-            DataYOffset = Convert.ToInt32(this.WaveData[DataXOffset]);
+            DataYOffset = Convert.ToInt32(this.WaveData[Convert.ToInt32(DataXOffset)]);
             endTime = DateTime.Now;
             ts_timeElapsed = (endTime - startTime);
             this.Refresh();
@@ -107,10 +129,10 @@ namespace PressControl
             pe.Graphics.DrawString("0", MiniFont, Brush, new Point(X1 - 15, Y1 + (H1 / 2) - 7));
             pe.Graphics.DrawString("-100", MiniFont, Brush, new Point(X1 - 28, Y1 + H1 - 14));
             // ticks on timeline
-            for (var j = X1; j < X2; j = j + (1000 / Timer.Interval))
+            for (var j = X1; j < X2; j = j + 50)
             {
-                var tickSize = (j % (500 / Timer.Interval) == 0) ? 9 : 2;
-                pe.Graphics.DrawLine(ThinPen, new Point(j, Y1 + (H1 / 2) - tickSize), new Point(j, Y1 + (H1 / 2) + tickSize));
+                //var tickSize = (j % (500 / Timer.Interval) == 0) ? 9 : 2;
+                pe.Graphics.DrawLine(ThinPen, new Point(j, Y1 + (H1 / 2) - 9), new Point(j, Y1 + (H1 / 2) + 9));
                 pe.Graphics.DrawLine(ThinnestPen, new Point(j, Y1), new Point(j, Y1 + H1));
             }
 
@@ -121,36 +143,26 @@ namespace PressControl
                 return;
             }
 
-            int x0 = X1;
-            int y0 = Y1 + (H1 / 2);
-           
-            //foreach(var segment in this.Waves)
-            //{
-            //    foreach(var value in segment.Data)
-            //    {
-            //        var x = x0 + 1;
-            //        var y = Convert.ToInt16(Y1 + (H1 / 2) - value);
-            //        pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
-            //        x0 = Convert.ToInt16(x);
-            //        y0 = y;
-            //    }
-            //}
-
+            double x0 = X1;
+            int y0 = Convert.ToInt16(Y1 + (H1 / 2) - this.WaveData[0]);
+  
             foreach (var value in this.WaveData)
             {
-                var x = x0 + 1;
+                double x = x0 + 1;
                 var y = Convert.ToInt16(Y1 + (H1 / 2) - value);
-                pe.Graphics.DrawLine(DataPen, x0, y0, x, y);
+                pe.Graphics.DrawLine(DataPen, Convert.ToInt32(x0), y0, Convert.ToInt32(x), y);
                 x0 = Convert.ToInt16(x);
                 y0 = y;
             }
 
-            pe.Graphics.DrawLine(TimePen, DataXOffset + X1, 0, DataXOffset + X1, H1);
-            pe.Graphics.FillEllipse(CursorPen, DataXOffset + X1 - 5, (H1 / 2) - 5 - DataYOffset, 10, 10);
+            if (this.Base.Playing)
+            {
+                pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1), 0, Convert.ToInt32(DataXOffset + X1), H1);
+                pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5), (H1 / 2) - 5 - DataYOffset, 10, 10);
 
-            pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
-            pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
-
+                pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
+                pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
+            }
         }
     }
 
