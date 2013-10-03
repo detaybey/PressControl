@@ -35,18 +35,21 @@
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dosyaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.temizleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yeniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yukleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.kaydetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.cikisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yardimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hakkindaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonList = new System.Windows.Forms.ImageList(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.btnStop = new PlayButton.PlayButton();
             this.btnPause = new PlayButton.PlayButton();
             this.btnPlayLoop = new PlayButton.PlayButton();
             this.btnPlay = new PlayButton.PlayButton();
-            this.temizleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graph2 = new PressControl.Graph();
             this.graph1 = new PressControl.Graph();
             this.menuStrip1.SuspendLayout();
@@ -88,36 +91,56 @@
             this.temizleToolStripMenuItem,
             this.yeniToolStripMenuItem,
             this.yukleToolStripMenuItem,
-            this.kaydetToolStripMenuItem,
+            this.saveAsMenu,
+            this.saveMenu,
             this.cikisToolStripMenuItem});
             this.dosyaToolStripMenuItem.Name = "dosyaToolStripMenuItem";
             this.dosyaToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.dosyaToolStripMenuItem.Text = "Dosya";
             // 
+            // temizleToolStripMenuItem
+            // 
+            this.temizleToolStripMenuItem.Name = "temizleToolStripMenuItem";
+            this.temizleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.temizleToolStripMenuItem.Text = "Temizle";
+            this.temizleToolStripMenuItem.Click += new System.EventHandler(this.temizleToolStripMenuItem_Click);
+            // 
             // yeniToolStripMenuItem
             // 
             this.yeniToolStripMenuItem.Name = "yeniToolStripMenuItem";
-            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yeniToolStripMenuItem.Text = "Yeni";
             this.yeniToolStripMenuItem.Click += new System.EventHandler(this.yeniToolStripMenuItem_Click);
             // 
             // yukleToolStripMenuItem
             // 
             this.yukleToolStripMenuItem.Name = "yukleToolStripMenuItem";
-            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yukleToolStripMenuItem.Text = "Yükle";
+            this.yukleToolStripMenuItem.Click += new System.EventHandler(this.yukleToolStripMenuItem_Click);
             // 
-            // kaydetToolStripMenuItem
+            // saveAsMenu
             // 
-            this.kaydetToolStripMenuItem.Name = "kaydetToolStripMenuItem";
-            this.kaydetToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-            this.kaydetToolStripMenuItem.Text = "Kaydet";
+            this.saveAsMenu.Enabled = false;
+            this.saveAsMenu.Name = "saveAsMenu";
+            this.saveAsMenu.Size = new System.Drawing.Size(152, 22);
+            this.saveAsMenu.Text = "Farklı Kaydet";
+            this.saveAsMenu.Click += new System.EventHandler(this.kaydetToolStripMenuItem_Click);
+            // 
+            // saveMenu
+            // 
+            this.saveMenu.Enabled = false;
+            this.saveMenu.Name = "saveMenu";
+            this.saveMenu.Size = new System.Drawing.Size(152, 22);
+            this.saveMenu.Text = "Kaydet";
+            this.saveMenu.Click += new System.EventHandler(this.saveMenu_Click);
             // 
             // cikisToolStripMenuItem
             // 
             this.cikisToolStripMenuItem.Name = "cikisToolStripMenuItem";
-            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cikisToolStripMenuItem.Text = "Çıkış";
+            this.cikisToolStripMenuItem.Click += new System.EventHandler(this.cikisToolStripMenuItem_Click);
             // 
             // yardimToolStripMenuItem
             // 
@@ -144,6 +167,16 @@
             this.buttonList.Images.SetKeyName(4, "PLAYLOOP.png");
             this.buttonList.Images.SetKeyName(5, "PLAYLOOP_ON.png");
             this.buttonList.Images.SetKeyName(6, "stop.png");
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.DefaultExt = "sgnl";
+            this.openFileDialog1.Filter = "Signal File (.sgnl)|";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "sgnl";
+            this.saveFileDialog1.Filter = "Signal File (.sgnl)|";
             // 
             // btnStop
             // 
@@ -217,29 +250,27 @@
             this.btnPlay.UseVisualStyleBackColor = false;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
-            // temizleToolStripMenuItem
-            // 
-            this.temizleToolStripMenuItem.Name = "temizleToolStripMenuItem";
-            this.temizleToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
-            this.temizleToolStripMenuItem.Text = "Temizle";
-            // 
             // graph2
             // 
             this.graph2.Base = null;
+            this.graph2.Changed = false;
             this.graph2.Location = new System.Drawing.Point(11, 282);
             this.graph2.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph2.Name = "graph2";
             this.graph2.Size = new System.Drawing.Size(919, 191);
             this.graph2.TabIndex = 2;
+            this.graph2.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph2.WaveData")));
             // 
             // graph1
             // 
             this.graph1.Base = null;
+            this.graph1.Changed = false;
             this.graph1.Location = new System.Drawing.Point(11, 49);
             this.graph1.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph1.Name = "graph1";
             this.graph1.Size = new System.Drawing.Size(919, 204);
             this.graph1.TabIndex = 1;
+            this.graph1.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph1.WaveData")));
             // 
             // App
             // 
@@ -282,7 +313,7 @@
         private System.Windows.Forms.ToolStripMenuItem dosyaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yeniToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yukleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem kaydetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsMenu;
         private System.Windows.Forms.ToolStripMenuItem cikisToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yardimToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hakkindaToolStripMenuItem;
@@ -292,6 +323,9 @@
         private PlayButton.PlayButton btnPause;
         private PlayButton.PlayButton btnStop;
         private System.Windows.Forms.ToolStripMenuItem temizleToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem saveMenu;
 
     }
 }

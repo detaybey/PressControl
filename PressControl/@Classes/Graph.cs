@@ -7,11 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PressControl
 {
     public partial class Graph : UserControl
     {
+        public string Name { get; set; }
+
         public App Base { get; set; }
         public Font MiniFont { get; set; }
         public Brush Brush { get; set; }
@@ -33,15 +37,17 @@ namespace PressControl
         public TimeSpan ts_timeElapsed;
         public PointF timerPoint;
 
-        public List<WaveSegment> Waves { get; set; }
-        public List<Double> WaveData { get; set; }
+        public bool Changed { get; set; }
+
+        public List<double> WaveData { get; set; }
 
         public Graph()
         {
             InitializeComponent();
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
-            Waves = new List<WaveSegment>();
+
             WaveData = new List<double>();
+
             BorderPen = new Pen(Color.Gray);
             ThinPen = new Pen(Color.LightGray);
             ThinnestPen = new Pen(Color.FromArgb(100, 210, 210, 210));
@@ -58,11 +64,46 @@ namespace PressControl
             Timer.Tick += Timer_Tick;
             startTime = DateTime.Now;
             timerPoint = new PointF(this.Width - 50, this.Height - 8);
+            Changed = false;
+
         }
 
         public void SetBase(App app)
         {
             this.Base = app;
+        }
+
+        public void Load(string name)
+        {
+            if (name.ToLower().EndsWith(".sgnl"))
+            {
+                name = name.ToLower().Replace(".sgnl", "");
+            }
+            this.Name = name;
+            using (var stream = new FileStream(name + ".sgnl", FileMode.Open))
+            {
+                var bf = new BinaryFormatter();
+                this.WaveData = (List<double>)bf.Deserialize(stream);
+                this.Refresh();
+            }
+        }
+
+        public void Save()
+        {
+            SaveAs(this.Name + ".sgnl");
+        }
+
+        public void SaveAs(string name)
+        {
+            if (this.WaveData.Count == 0)
+            {
+                return;
+            }
+            using (var stream = new FileStream(name, FileMode.Create))
+            {
+                var bf = new BinaryFormatter();
+                bf.Serialize(stream, this.WaveData);
+            }
         }
 
         public void Start()
@@ -83,13 +124,13 @@ namespace PressControl
         public void Stop()
         {
             this.DataXOffset = 0;
-            this.Refresh();       
-            Timer.Stop();             
+            this.Refresh();
+            Timer.Stop();
         }
 
         void Timer_Tick(object sender, EventArgs e)
         {
-            if (this.Waves.Count==0)
+            if (this.WaveData.Count == 0)
             {
                 return;
             }
@@ -138,14 +179,14 @@ namespace PressControl
 
             pe.Graphics.DrawRectangle(BorderPen, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
 
-            if (this.Waves.Count == 0)
+            if (this.WaveData.Count == 0)
             {
                 return;
             }
 
             double x0 = X1;
             int y0 = Convert.ToInt16(Y1 + (H1 / 2) - this.WaveData[0]);
-  
+
             foreach (var value in this.WaveData)
             {
                 double x = x0 + 1;

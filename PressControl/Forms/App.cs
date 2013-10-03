@@ -34,8 +34,10 @@ namespace PressControl
 
         public void SetDataForm(WaveSegment segment)
         {
-            graph1.Waves.Add(segment);
             graph1.WaveData.AddRange(segment.Data);
+            graph1.Changed = true;
+            saveMenu.Enabled = true;
+            saveAsMenu.Enabled = true;
             graph1.Refresh();
         }
 
@@ -85,6 +87,47 @@ namespace PressControl
             btnPause.IsOn = false;
             btnPlayLoop.IsOn = false;
             graph1.Stop();
+        }
+
+        private void temizleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var msg = MessageBox.Show("Emin misiniz?", "Siliniyor?", MessageBoxButtons.YesNo);
+            if (msg == System.Windows.Forms.DialogResult.Yes)
+            {
+                graph1.WaveData.Clear();
+                graph1.Changed = false;
+                graph1.Refresh();
+                saveMenu.Enabled = false;
+                saveAsMenu.Enabled = false;
+            }
+        }
+
+        private void yukleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = openFileDialog1.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                graph1.Load(openFileDialog1.FileName);
+            }
+        }
+
+        private void kaydetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = saveFileDialog1.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                graph1.SaveAs(saveFileDialog1.FileName);
+            }
+        }
+
+        private void cikisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void saveMenu_Click(object sender, EventArgs e)
+        {
+            graph1.Save();
         }
 
 
