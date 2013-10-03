@@ -28,7 +28,7 @@ namespace PressControl
         public Pen TimePen { get; set; }
         public Brush CursorPen { get; set; }
 
-        public Timer Timer { get; set; }
+        public SuperTimer Timer { get; set; }
         public int X1 = 30;
         public double DataXOffset = 0;
         public int DataYOffset = 0;
@@ -59,13 +59,15 @@ namespace PressControl
             TimePen = new Pen(Color.Red);
             CursorPen = new SolidBrush(Color.Orange);
 
-            Timer = new Timer();
-            Timer.Interval = 20;
-            Timer.Tick += Timer_Tick;
+            Timer = new SuperTimer();
+            Timer.Mode = TimerMode.Periodic;
+            Timer.Period = 20;
+            Timer.Resolution = 1;
+            Timer.SynchronizingObject = this;
+            Timer.Tick += new System.EventHandler(this.Timer_Tick);
             startTime = DateTime.Now;
             timerPoint = new PointF(this.Width - 50, this.Height - 8);
             Changed = false;
-
         }
 
         public void SetBase(App app)
@@ -150,7 +152,7 @@ namespace PressControl
             DataYOffset = Convert.ToInt32(this.WaveData[Convert.ToInt32(DataXOffset)]);
             endTime = DateTime.Now;
             ts_timeElapsed = (endTime - startTime);
-            this.Refresh();
+            this.Refresh();            
         }
 
         protected override void OnPaint(PaintEventArgs pe)

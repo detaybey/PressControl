@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="%40Classes\SuperTimer.cs" />
     <Compile Include="%40Classes\WaveSegment.cs" />
     <Compile Include="Forms\App.cs">
       <SubType>Form</SubType>
