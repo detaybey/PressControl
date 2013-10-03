@@ -1,4 +1,5 @@
 ﻿
+using PressControl.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,12 +20,14 @@ namespace PressControl
 
 
         public NewForm NewForm { get; set; }
+     
 
         public App()
         {
             InitializeComponent();
             NewForm = new NewForm(this);
- 
+       
+
             this.Playing = false;
             this.Loop = false;
 
@@ -122,12 +125,29 @@ namespace PressControl
 
         private void cikisToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (graph1.Changed)
+            {
+                var result = MessageBox.Show("Sinyal yapısında değişiklik var ve kaydetmediniz. Çıkmak istediğinizden emin misiniz?", "Dikkat", MessageBoxButtons.YesNo);
+                if(result== System.Windows.Forms.DialogResult.Yes)
+                {
+                    Environment.Exit(0);
+                }else
+                {
+                    return;
+                }
+            }
             Environment.Exit(0);
         }
 
         private void saveMenu_Click(object sender, EventArgs e)
         {
             graph1.Save();
+        }
+
+        private void hakkindaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var box = new AboutBox();
+            box.Show();
         }
 
 
