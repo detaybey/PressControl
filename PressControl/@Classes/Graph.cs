@@ -77,12 +77,9 @@ namespace PressControl
 
         public void Load(string name)
         {
-            if (name.ToLower().EndsWith(".sgnl"))
-            {
-                name = name.ToLower().Replace(".sgnl", "");
-            }
-            this.Name = name;
-            using (var stream = new FileStream(name + ".sgnl", FileMode.Open))
+            this.Name = System.IO.Path.GetFileName(name);
+            this.Base.Text = this.Base.AppName + this.Name;
+            using (var stream = new FileStream(name, FileMode.Open))
             {
                 var bf = new BinaryFormatter();
                 this.WaveData = (List<double>)bf.Deserialize(stream);
@@ -92,7 +89,7 @@ namespace PressControl
 
         public void Save()
         {
-            SaveAs(this.Name + ".sgnl");
+            SaveAs(this.Name);
         }
 
         public void SaveAs(string name)
@@ -101,6 +98,10 @@ namespace PressControl
             {
                 return;
             }
+           
+            this.Name = System.IO.Path.GetFileName(name);
+            this.Base.Text = this.Base.AppName + this.Name;
+
             using (var stream = new FileStream(name, FileMode.Create))
             {
                 var bf = new BinaryFormatter();
@@ -203,8 +204,10 @@ namespace PressControl
                 pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1), 0, Convert.ToInt32(DataXOffset + X1), H1);
                 pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5), (H1 / 2) - 5 - DataYOffset, 10, 10);
 
-                pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
-                pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
+                this.Base.WaveTime.Text = ts_timeElapsed.ToString();
+                this.Base.WaveValue.Text = DataYOffset.ToString();
+                //pe.Graphics.DrawString(ts_timeElapsed.ToString(), MiniFont, Brush, timerPoint);
+                //pe.Graphics.DrawString(DataYOffset.ToString(), MiniFont, Brush, new PointF(timerPoint.X + 70, timerPoint.Y - 10));
             }
         }
     }

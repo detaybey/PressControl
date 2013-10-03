@@ -17,7 +17,7 @@ namespace PressControl
     {
         public bool Loop { get; set; }
         public bool Playing { get; set; }
-
+        public string AppName = "UMPC v1.0 ";
 
         public NewForm NewForm { get; set; }
      
@@ -102,6 +102,7 @@ namespace PressControl
                 graph1.Refresh();
                 saveMenu.Enabled = false;
                 saveAsMenu.Enabled = false;
+                this.Text = this.AppName;
             }
         }
 

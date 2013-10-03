@@ -50,9 +50,15 @@
             this.btnPause = new PlayButton.PlayButton();
             this.btnPlayLoop = new PlayButton.PlayButton();
             this.btnPlay = new PlayButton.PlayButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.WaveValue = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.WaveTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.graph2 = new PressControl.Graph();
             this.graph1 = new PressControl.Graph();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -251,6 +257,47 @@
             this.btnPlay.UseVisualStyleBackColor = false;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2,
+            this.WaveTime,
+            this.toolStripStatusLabel1,
+            this.WaveValue});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 487);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1011, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.Stretch = false;
+            this.statusStrip1.TabIndex = 10;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(42, 17);
+            this.toolStripStatusLabel1.Text = "Değer";
+            // 
+            // WaveValue
+            // 
+            this.WaveValue.Name = "WaveValue";
+            this.WaveValue.Size = new System.Drawing.Size(12, 17);
+            this.WaveValue.Text = "-";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(44, 17);
+            this.toolStripStatusLabel2.Text = "Zaman";
+            // 
+            // WaveTime
+            // 
+            this.WaveTime.Name = "WaveTime";
+            this.WaveTime.Size = new System.Drawing.Size(12, 17);
+            this.WaveTime.Text = "-";
+            // 
             // graph2
             // 
             this.graph2.Base = null;
@@ -280,7 +327,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.BackgroundImage = global::PressControl.Properties.Resources.background;
-            this.ClientSize = new System.Drawing.Size(1011, 496);
+            this.ClientSize = new System.Drawing.Size(1011, 509);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnPause);
             this.Controls.Add(this.btnPlayLoop);
@@ -290,6 +338,8 @@
             this.Controls.Add(this.graph2);
             this.Controls.Add(this.graph1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
@@ -298,6 +348,8 @@
             this.Text = "UMPC v1.0";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -327,6 +379,11 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem saveMenu;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        public System.Windows.Forms.ToolStripStatusLabel WaveValue;
+        public System.Windows.Forms.ToolStripStatusLabel WaveTime;
 
     }
 }
