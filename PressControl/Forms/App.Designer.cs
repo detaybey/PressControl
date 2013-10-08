@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(App));
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
+            this.DataPort = new System.IO.Ports.SerialPort(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -46,20 +46,29 @@
             this.buttonList = new System.Windows.Forms.ImageList(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.WaveTime = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.WaveValue = new System.Windows.Forms.ToolStripStatusLabel();
+            this.comPortList = new System.Windows.Forms.ComboBox();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.incomingData = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnStop = new PlayButton.PlayButton();
             this.btnPause = new PlayButton.PlayButton();
             this.btnPlayLoop = new PlayButton.PlayButton();
             this.btnPlay = new PlayButton.PlayButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.WaveValue = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.WaveTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.graph2 = new PressControl.Graph();
             this.graph1 = new PressControl.Graph();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // DataPort
+            // 
+            this.DataPort.BaudRate = 57600;
             // 
             // label1
             // 
@@ -185,6 +194,74 @@
             this.saveFileDialog1.DefaultExt = "sgnl";
             this.saveFileDialog1.Filter = "Signal File (.sgnl)|";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2,
+            this.WaveTime,
+            this.toolStripStatusLabel1,
+            this.WaveValue,
+            this.toolStripStatusLabel3,
+            this.incomingData,
+            this.toolStripStatusLabel4,
+            this.ConnectionStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 487);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1011, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.Stretch = false;
+            this.statusStrip1.TabIndex = 10;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(44, 17);
+            this.toolStripStatusLabel2.Text = "Zaman";
+            // 
+            // WaveTime
+            // 
+            this.WaveTime.Name = "WaveTime";
+            this.WaveTime.Size = new System.Drawing.Size(12, 17);
+            this.WaveTime.Text = "-";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(78, 17);
+            this.toolStripStatusLabel1.Text = "Giden Değer";
+            // 
+            // WaveValue
+            // 
+            this.WaveValue.Name = "WaveValue";
+            this.WaveValue.Size = new System.Drawing.Size(12, 17);
+            this.WaveValue.Text = "-";
+            // 
+            // comPortList
+            // 
+            this.comPortList.FormattingEnabled = true;
+            this.comPortList.Location = new System.Drawing.Point(946, 282);
+            this.comPortList.Name = "comPortList";
+            this.comPortList.Size = new System.Drawing.Size(53, 21);
+            this.comPortList.TabIndex = 11;
+            this.comPortList.Text = "??";
+            this.comPortList.SelectedIndexChanged += new System.EventHandler(this.comPortList_SelectedIndexChanged);
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(78, 17);
+            this.toolStripStatusLabel3.Text = "Gelen Deger";
+            // 
+            // incomingData
+            // 
+            this.incomingData.Name = "incomingData";
+            this.incomingData.Size = new System.Drawing.Size(12, 17);
+            this.incomingData.Text = "-";
+            // 
             // btnStop
             // 
             this.btnStop.BackColor = System.Drawing.Color.Transparent;
@@ -257,47 +334,6 @@
             this.btnPlay.UseVisualStyleBackColor = false;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel2,
-            this.WaveTime,
-            this.toolStripStatusLabel1,
-            this.WaveValue});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 487);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1011, 22);
-            this.statusStrip1.SizingGrip = false;
-            this.statusStrip1.Stretch = false;
-            this.statusStrip1.TabIndex = 10;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(42, 17);
-            this.toolStripStatusLabel1.Text = "Değer";
-            // 
-            // WaveValue
-            // 
-            this.WaveValue.Name = "WaveValue";
-            this.WaveValue.Size = new System.Drawing.Size(12, 17);
-            this.WaveValue.Text = "-";
-            // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(44, 17);
-            this.toolStripStatusLabel2.Text = "Zaman";
-            // 
-            // WaveTime
-            // 
-            this.WaveTime.Name = "WaveTime";
-            this.WaveTime.Size = new System.Drawing.Size(12, 17);
-            this.WaveTime.Text = "-";
-            // 
             // graph2
             // 
             this.graph2.Base = null;
@@ -305,6 +341,7 @@
             this.graph2.Location = new System.Drawing.Point(11, 282);
             this.graph2.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph2.Name = "graph2";
+            this.graph2.ReadOnly = false;
             this.graph2.Size = new System.Drawing.Size(919, 191);
             this.graph2.TabIndex = 2;
             this.graph2.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph2.WaveData")));
@@ -316,9 +353,23 @@
             this.graph1.Location = new System.Drawing.Point(11, 49);
             this.graph1.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph1.Name = "graph1";
+            this.graph1.ReadOnly = false;
             this.graph1.Size = new System.Drawing.Size(919, 204);
             this.graph1.TabIndex = 1;
             this.graph1.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph1.WaveData")));
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(52, 17);
+            this.toolStripStatusLabel4.Text = "Bağlantı";
+            // 
+            // ConnectionStatus
+            // 
+            this.ConnectionStatus.Name = "ConnectionStatus";
+            this.ConnectionStatus.Size = new System.Drawing.Size(12, 17);
+            this.ConnectionStatus.Text = "*";
             // 
             // App
             // 
@@ -328,6 +379,7 @@
             this.BackColor = System.Drawing.SystemColors.Window;
             this.BackgroundImage = global::PressControl.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(1011, 509);
+            this.Controls.Add(this.comPortList);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnPause);
@@ -357,7 +409,6 @@
 
         #endregion
 
-        private System.IO.Ports.SerialPort serialPort1;
         private Graph graph1;
         private Graph graph2;
         private System.Windows.Forms.Label label1;
@@ -384,6 +435,12 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         public System.Windows.Forms.ToolStripStatusLabel WaveValue;
         public System.Windows.Forms.ToolStripStatusLabel WaveTime;
+        private System.Windows.Forms.ComboBox comPortList;
+        public System.IO.Ports.SerialPort DataPort;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        public System.Windows.Forms.ToolStripStatusLabel incomingData;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+        private System.Windows.Forms.ToolStripStatusLabel ConnectionStatus;
 
     }
 }

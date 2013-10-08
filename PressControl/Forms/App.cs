@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,21 +19,37 @@ namespace PressControl
         public bool Loop { get; set; }
         public bool Playing { get; set; }
         public string AppName = "UMPC v1.0 ";
-
         public NewForm NewForm { get; set; }
-     
+        public Timer ConnectionTimer { get; set; }
 
         public App()
         {
             InitializeComponent();
             NewForm = new NewForm(this);
-       
+
+            SetAvailableComPorts();
 
             this.Playing = false;
             this.Loop = false;
 
-            this.graph1.SetBase(this);
-            this.graph2.SetBase(this);
+            this.graph1.SetBase(this, false);
+            this.graph2.SetBase(this, true);
+
+            ConnectionTimer = new Timer();
+            ConnectionTimer.Tick += ConnectionTimer_Tick;
+            ConnectionTimer.Interval = 1000 * 1;
+            ConnectionTimer.Start();
+
+            DataPort.BaudRate = 57600;
+            //for (var j = 0; j < 100; j++)
+            //{
+            //    graph2.AddData(j);
+            //}
+        }
+
+        void ConnectionTimer_Tick(object sender, EventArgs e)
+        {
+            PrintConnectionStatus();
         }
 
         public void SetDataForm(WaveSegment segment)
@@ -44,10 +61,49 @@ namespace PressControl
             graph1.Refresh();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void RelayData(int data)
         {
-      
+            graph2.AddData(data, true);
         }
+
+        public void PrintConnectionStatus()
+        {
+            if (DataPort.IsOpen)
+            {
+                ConnectionStatus.Text = "Bağlı";
+            }
+            else
+            {
+                ConnectionStatus.Text = "-";
+            }
+        }
+
+        public void SetAvailableComPorts()
+        {
+            comPortList.Items.Clear();
+            var ports = SerialPort.GetPortNames();
+            foreach (var port in ports)
+            {
+                comPortList.Items.Add(port);
+            }
+            if (ports.Count() == 1)
+            {
+                comPortList.SelectedIndex = 0;
+            }
+            DataPort.DataReceived += DataPort_DataReceived;
+        }
+
+        void DataPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            var port = (SerialPort)sender;
+            var header = port.ReadByte();
+            var data = port.ReadByte();
+            var finish = port.ReadByte();
+
+            incomingData.Text = data.ToString() + "(" + graph2.WaveData.Count() + ")";
+            graph2.AddData(data-110);
+        }
+
 
         private void yeniToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -129,10 +185,11 @@ namespace PressControl
             if (graph1.Changed)
             {
                 var result = MessageBox.Show("Sinyal yapısında değişiklik var ve kaydetmediniz. Çıkmak istediğinizden emin misiniz?", "Dikkat", MessageBoxButtons.YesNo);
-                if(result== System.Windows.Forms.DialogResult.Yes)
+                if (result == System.Windows.Forms.DialogResult.Yes)
                 {
                     Environment.Exit(0);
-                }else
+                }
+                else
                 {
                     return;
                 }
@@ -150,6 +207,22 @@ namespace PressControl
             var box = new AboutBox();
             box.Show();
         }
+
+
+        private void comPortList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                DataPort.PortName = comPortList.Text;
+                DataPort.Open();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Port kullanımda veya bir problem var");
+            }
+        }
+
+
 
 
     }

@@ -28,12 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.scrollBar = new System.Windows.Forms.HScrollBar();
             this.SuspendLayout();
+            // 
+            // scrollBar
+            // 
+            this.scrollBar.Location = new System.Drawing.Point(0, 174);
+            this.scrollBar.Name = "scrollBar";
+            this.scrollBar.Size = new System.Drawing.Size(80, 17);
+            this.scrollBar.TabIndex = 0;
+            this.scrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollBar_Scroll);
             // 
             // Graph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.scrollBar);
             this.Name = "Graph";
             this.Size = new System.Drawing.Size(671, 191);
             this.ResumeLayout(false);
@@ -41,5 +51,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.HScrollBar scrollBar;
     }
 }
