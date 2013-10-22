@@ -211,7 +211,8 @@ namespace PressControl
                 scrollBar.Top = this.Height - 20;
                 scrollBar.Visible = true;
                 scrollBar.Minimum = 0;
-                scrollBar.Maximum = this.Width /3;
+                scrollBar.Maximum = this.Width;
+                scrollBar.LargeChange = this.WaveData.Count - this.Width - 1;
             }
             else
             {

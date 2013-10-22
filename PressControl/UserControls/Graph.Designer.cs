@@ -34,8 +34,9 @@
             // scrollBar
             // 
             this.scrollBar.Location = new System.Drawing.Point(0, 174);
+            this.scrollBar.Maximum = 50;
             this.scrollBar.Name = "scrollBar";
-            this.scrollBar.Size = new System.Drawing.Size(80, 17);
+            this.scrollBar.Size = new System.Drawing.Size(671, 17);
             this.scrollBar.TabIndex = 0;
             this.scrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollBar_Scroll);
             // 

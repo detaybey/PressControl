@@ -51,17 +51,17 @@
             this.WaveTime = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.WaveValue = new System.Windows.Forms.ToolStripStatusLabel();
-            this.comPortList = new System.Windows.Forms.ComboBox();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.incomingData = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnStop = new PlayButton();
-            this.btnPause = new PlayButton();
-            this.btnPlayLoop = new PlayButton();
-            this.btnPlay = new PlayButton();
-            this.graph2 = new PressControl.Graph();
-            this.graph1 = new PressControl.Graph();
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.comPortList = new System.Windows.Forms.ComboBox();
+            this.btnStop = new PressControl.PlayButton();
+            this.btnPause = new PressControl.PlayButton();
+            this.btnPlayLoop = new PressControl.PlayButton();
+            this.btnPlay = new PressControl.PlayButton();
+            this.graph2 = new PressControl.Graph();
+            this.graph1 = new PressControl.Graph();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -116,21 +116,23 @@
             // temizleToolStripMenuItem
             // 
             this.temizleToolStripMenuItem.Name = "temizleToolStripMenuItem";
-            this.temizleToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.temizleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this.temizleToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.temizleToolStripMenuItem.Text = "Temizle";
             this.temizleToolStripMenuItem.Click += new System.EventHandler(this.temizleToolStripMenuItem_Click);
             // 
             // yeniToolStripMenuItem
             // 
             this.yeniToolStripMenuItem.Name = "yeniToolStripMenuItem";
-            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.yeniToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yeniToolStripMenuItem.Text = "Yeni";
             this.yeniToolStripMenuItem.Click += new System.EventHandler(this.yeniToolStripMenuItem_Click);
             // 
             // yukleToolStripMenuItem
             // 
             this.yukleToolStripMenuItem.Name = "yukleToolStripMenuItem";
-            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yukleToolStripMenuItem.Text = "Yükle";
             this.yukleToolStripMenuItem.Click += new System.EventHandler(this.yukleToolStripMenuItem_Click);
             // 
@@ -138,7 +140,7 @@
             // 
             this.saveAsMenu.Enabled = false;
             this.saveAsMenu.Name = "saveAsMenu";
-            this.saveAsMenu.Size = new System.Drawing.Size(141, 22);
+            this.saveAsMenu.Size = new System.Drawing.Size(152, 22);
             this.saveAsMenu.Text = "Farklı Kaydet";
             this.saveAsMenu.Click += new System.EventHandler(this.kaydetToolStripMenuItem_Click);
             // 
@@ -146,14 +148,15 @@
             // 
             this.saveMenu.Enabled = false;
             this.saveMenu.Name = "saveMenu";
-            this.saveMenu.Size = new System.Drawing.Size(141, 22);
+            this.saveMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.saveMenu.Size = new System.Drawing.Size(156, 22);
             this.saveMenu.Text = "Kaydet";
             this.saveMenu.Click += new System.EventHandler(this.saveMenu_Click);
             // 
             // cikisToolStripMenuItem
             // 
             this.cikisToolStripMenuItem.Name = "cikisToolStripMenuItem";
-            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cikisToolStripMenuItem.Text = "Çıkış";
             this.cikisToolStripMenuItem.Click += new System.EventHandler(this.cikisToolStripMenuItem_Click);
             // 
@@ -168,7 +171,7 @@
             // hakkindaToolStripMenuItem
             // 
             this.hakkindaToolStripMenuItem.Name = "hakkindaToolStripMenuItem";
-            this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.hakkindaToolStripMenuItem.Text = "Hakkında";
             this.hakkindaToolStripMenuItem.Click += new System.EventHandler(this.hakkindaToolStripMenuItem_Click);
             // 
@@ -239,16 +242,6 @@
             this.WaveValue.Size = new System.Drawing.Size(12, 17);
             this.WaveValue.Text = "-";
             // 
-            // comPortList
-            // 
-            this.comPortList.FormattingEnabled = true;
-            this.comPortList.Location = new System.Drawing.Point(946, 282);
-            this.comPortList.Name = "comPortList";
-            this.comPortList.Size = new System.Drawing.Size(53, 21);
-            this.comPortList.TabIndex = 11;
-            this.comPortList.Text = "??";
-            this.comPortList.SelectedIndexChanged += new System.EventHandler(this.comPortList_SelectedIndexChanged);
-            // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -261,6 +254,29 @@
             this.incomingData.Name = "incomingData";
             this.incomingData.Size = new System.Drawing.Size(12, 17);
             this.incomingData.Text = "-";
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(52, 17);
+            this.toolStripStatusLabel4.Text = "Bağlantı";
+            // 
+            // ConnectionStatus
+            // 
+            this.ConnectionStatus.Name = "ConnectionStatus";
+            this.ConnectionStatus.Size = new System.Drawing.Size(12, 17);
+            this.ConnectionStatus.Text = "*";
+            // 
+            // comPortList
+            // 
+            this.comPortList.FormattingEnabled = true;
+            this.comPortList.Location = new System.Drawing.Point(946, 282);
+            this.comPortList.Name = "comPortList";
+            this.comPortList.Size = new System.Drawing.Size(53, 21);
+            this.comPortList.TabIndex = 11;
+            this.comPortList.Text = "??";
+            this.comPortList.SelectedIndexChanged += new System.EventHandler(this.comPortList_SelectedIndexChanged);
             // 
             // btnStop
             // 
@@ -276,7 +292,7 @@
             this.btnStop.Size = new System.Drawing.Size(48, 47);
             this.btnStop.TabIndex = 9;
             this.btnStop.Text = "playButton4";
-            this.btnStop.Type = Type.Stop;
+            this.btnStop.Type = PressControl.Type.Stop;
             this.btnStop.UseVisualStyleBackColor = false;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -294,7 +310,7 @@
             this.btnPause.Size = new System.Drawing.Size(48, 47);
             this.btnPause.TabIndex = 8;
             this.btnPause.Text = "playButton3";
-            this.btnPause.Type = Type.Pause;
+            this.btnPause.Type = PressControl.Type.Pause;
             this.btnPause.UseVisualStyleBackColor = false;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
@@ -312,7 +328,7 @@
             this.btnPlayLoop.Size = new System.Drawing.Size(48, 47);
             this.btnPlayLoop.TabIndex = 7;
             this.btnPlayLoop.Text = "playButton2";
-            this.btnPlayLoop.Type = Type.PlayLoop;
+            this.btnPlayLoop.Type = PressControl.Type.PlayLoop;
             this.btnPlayLoop.UseVisualStyleBackColor = false;
             this.btnPlayLoop.Click += new System.EventHandler(this.btnPlayLoop_Click);
             // 
@@ -330,7 +346,7 @@
             this.btnPlay.Size = new System.Drawing.Size(48, 47);
             this.btnPlay.TabIndex = 6;
             this.btnPlay.Text = "playButton1";
-            this.btnPlay.Type = Type.Play;
+            this.btnPlay.Type = PressControl.Type.Play;
             this.btnPlay.UseVisualStyleBackColor = false;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
@@ -357,19 +373,6 @@
             this.graph1.Size = new System.Drawing.Size(919, 204);
             this.graph1.TabIndex = 1;
             this.graph1.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph1.WaveData")));
-            // 
-            // toolStripStatusLabel4
-            // 
-            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(52, 17);
-            this.toolStripStatusLabel4.Text = "Bağlantı";
-            // 
-            // ConnectionStatus
-            // 
-            this.ConnectionStatus.Name = "ConnectionStatus";
-            this.ConnectionStatus.Size = new System.Drawing.Size(12, 17);
-            this.ConnectionStatus.Text = "*";
             // 
             // App
             // 
