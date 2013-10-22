@@ -17,7 +17,6 @@ namespace PressControl
         public const int OUTERWIDTH = 96;
         private int ScrollOffset = 0;
         public string Name { get; set; }
-
         public App Base { get; set; }
         public Font MiniFont { get; set; }
         public Brush Brush { get; set; }
@@ -29,7 +28,6 @@ namespace PressControl
         public Pen ThinnestPen { get; set; }
         public Pen TimePen { get; set; }
         public Brush CursorPen { get; set; }
-
         public SuperTimer Timer { get; set; }
 
         public int X1 = 30;
@@ -45,14 +43,19 @@ namespace PressControl
 
         public List<double> WaveData { get; set; }
 
+        /// <summary>
+        /// Initialize graph component.
+        /// </summary>
         public Graph()
         {
             InitializeComponent();
-            DataBuffer = new byte[4];
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 
+            // set arrays
+            DataBuffer = new byte[4];
             WaveData = new List<double>();
 
+            // visual styling
             BorderPen = new Pen(Color.Gray);
             ThinPen = new Pen(Color.LightGray);
             ThinnestPen = new Pen(Color.FromArgb(100, 210, 210, 210));
@@ -64,11 +67,12 @@ namespace PressControl
             TimePen = new Pen(Color.Red);
             CursorPen = new SolidBrush(Color.Orange);
 
+            // timer for sending data over time (every 20ms)
             if (!this.ReadOnly)
             {
                 Timer = new SuperTimer();
                 Timer.Mode = TimerMode.Periodic;
-                Timer.Period = 20;
+                Timer.Period = 20;   //         50 times a second , 1000/50
                 Timer.Resolution = 1;
                 Timer.SynchronizingObject = this;
                 Timer.Tick += new System.EventHandler(this.Timer_Tick);
@@ -78,12 +82,14 @@ namespace PressControl
             }
         }
 
+        // sets the link between the app and the graph component
         public void SetBase(App app, bool isReadOnly)
         {
             this.Base = app;
             this.ReadOnly = isReadOnly;
         }
 
+        // loads a saved signal data
         public void Load(string name)
         {
             if (!this.ReadOnly)
@@ -99,6 +105,7 @@ namespace PressControl
             }
         }
 
+        // saves the signal data
         public void Save()
         {
             if (!this.ReadOnly)
@@ -107,6 +114,7 @@ namespace PressControl
             }
         }
 
+        // saves the signal data with a different name
         public void SaveAs(string name)
         {
             if (!this.ReadOnly)
@@ -127,6 +135,7 @@ namespace PressControl
             }
         }
 
+        // starts sending the signal 
         public void Start()
         {
             if (!this.ReadOnly)
@@ -140,6 +149,7 @@ namespace PressControl
             }
         }
 
+        // pauses sending the signal
         public void Pause()
         {
             if (!this.ReadOnly)
@@ -148,6 +158,7 @@ namespace PressControl
             }
         }
 
+        // stops the signal
         public void Stop()
         {
             if (!this.ReadOnly)
@@ -158,6 +169,9 @@ namespace PressControl
             }
         }
 
+        /// <summary>
+        /// run every 20ms and send the data to port (if it's open)
+        /// </summary>
         void Timer_Tick(object sender, EventArgs e)
         {
             if (!this.ReadOnly)
@@ -181,6 +195,7 @@ namespace PressControl
                 }
                 DataYOffset = Convert.ToInt32(this.WaveData[Convert.ToInt32(DataXOffset)]);
 
+                // send the current data to port if the port is available
                 if (this.Base.DataPort.IsOpen)
                 {
                     DataBuffer[0] = 0;
@@ -196,6 +211,10 @@ namespace PressControl
             }
         }
 
+        /// <summary>
+        /// canvas refresh event. all the bar-painting occurs here.
+        /// </summary>
+        /// <param name="pe"></param>
         protected override void OnPaint(PaintEventArgs pe)
         {
             // Calling the base class OnPaint
@@ -237,6 +256,7 @@ namespace PressControl
 
             pe.Graphics.DrawRectangle(BorderPen, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
 
+            // if there is no wave data, return.
             if (this.WaveData.Count == 0)
             {
                 return;
@@ -270,7 +290,6 @@ namespace PressControl
                 }
             }
         }
-
 
         public void AddData(double data, bool resetOnMax = true)
         {

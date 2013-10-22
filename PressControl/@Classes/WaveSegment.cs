@@ -6,41 +6,42 @@ using System.Threading.Tasks;
 
 namespace PressControl
 {
-    /*   -10      90
-     *   diff= -10 - (+90)  = -100 => abs() => 100 
-     *   interval/sec = 100/3  = 33.333
-     *   interval/tick         = 33.3333/50 => 0.666666                        
-     * 
-     */
-
+    /// <summary>
+    /// A wavesegment 
+    /// </summary>
     public class WaveSegment
     {
-        public int Start { get; set; }
-        public int End { get; set; }
-        public int Seconds { get; set; }
-
         public List<double> Data { get; set; }
 
+        /// <summary>
+        /// Create a signal-segment with start-end parameters and seconds.
+        /// The constructor will create data using these three parameters.
+        /// </summary>
+        /// <param name="start">the start value of the sequence</param>
+        /// <param name="end">the end value of the sequence</param>
+        /// <param name="seconds">how many seconds will it take from one value to another</param>
         public WaveSegment(int start, int end, int seconds)
         {
-            this.Start = start;
-            this.End = end;
-            this.Seconds = seconds;
-
             var result = new List<double>();
-            var bufferLength = this.Seconds*50;
 
-            var intervalSec = Math.Abs((this.Start - this.End) / this.Seconds);
+            // the length = 50 values per second X seconds
+            var bufferLength = seconds * 50;
+            
+            // the change per seconds
+            var intervalSec = Math.Abs((start - end) / seconds);
+
+            // the change per ticks
             double intervalTicks = intervalSec / 50.0;
 
+            // the direction of the change
             if (start > end)
             {
                 intervalTicks = -1 * intervalTicks;
             }
 
-            double cursor = this.Start;
+            double cursor = start;
 
-
+            // create the data array
             for (var j = 0; j < bufferLength; j++)
             {
                 result.Add(cursor);
