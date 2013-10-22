@@ -42,19 +42,15 @@ namespace PressControl
             ConnectionTimer.Interval = 1000 * 1;
             ConnectionTimer.Start();
 
-            TestFeedTimer = new SuperTimer();
-            TestFeedTimer.Mode = TimerMode.Periodic;
-            TestFeedTimer.Resolution = 1;
-            TestFeedTimer.SynchronizingObject = this;
-            TestFeedTimer.Tick += new System.EventHandler(TestFeedTimer_Tick);
-            TestFeedTimer.Period = 20;
-            TestFeedTimer.Start();
+            //TestFeedTimer = new SuperTimer();
+            //TestFeedTimer.Mode = TimerMode.Periodic;
+            //TestFeedTimer.Resolution = 1;
+            //TestFeedTimer.SynchronizingObject = this;
+            //TestFeedTimer.Tick += new System.EventHandler(TestFeedTimer_Tick);
+            //TestFeedTimer.Period = 20;
+            //TestFeedTimer.Start();
 
             DataPort.BaudRate = 57600;
-            //for (var j = 0; j < 100; j++)
-            //{
-            //    graph2.AddData(j);
-            //}
         }
 
         void TestFeedTimer_Tick(object sender, EventArgs e)
@@ -118,12 +114,12 @@ namespace PressControl
         void DataPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             var port = (SerialPort)sender;
-            var header = port.ReadByte();
-            var data = port.ReadByte();
-            var finish = port.ReadByte();
+            int d0 = port.ReadByte();
+            int d1 = port.ReadByte();
+            int d2 = port.ReadByte();
 
-            incomingData.Text = data.ToString() + "(" + graph2.WaveData.Count() + ")";
-            graph2.AddData(data - 110);
+            // incomingData.Text = data.ToString() + "(" + graph2.WaveData.Count() + ")";
+            graph2.AddData(d1 - 110);
         }
 
 

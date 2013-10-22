@@ -52,7 +52,7 @@ namespace PressControl
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 
             // set arrays
-            DataBuffer = new byte[4];
+            DataBuffer = new byte[5];
             WaveData = new List<double>();
 
             // visual styling
@@ -201,8 +201,9 @@ namespace PressControl
                     DataBuffer[0] = 0;
                     DataBuffer[1] = (byte)(DataYOffset + 110);
                     DataBuffer[2] = (byte)(this.Base.Playing == true ? 2 : 1);
-                    DataBuffer[3] = 255;
-                    this.Base.DataPort.Write(DataBuffer, 0, 4);
+                    DataBuffer[3] = (byte)(this.Base.manuelBasinc.Value);
+                    DataBuffer[4] = 255;
+                    this.Base.DataPort.Write(DataBuffer, 0, 5);
                     //this.Base.RelayData(DataYOffset);
                 }
                 endTime = DateTime.Now;

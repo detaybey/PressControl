@@ -62,8 +62,11 @@
             this.btnPlay = new PressControl.PlayButton();
             this.graph2 = new PressControl.Graph();
             this.graph1 = new PressControl.Graph();
+            this.manuelBasinc = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.manuelBasinc)).BeginInit();
             this.SuspendLayout();
             // 
             // DataPort
@@ -125,14 +128,14 @@
             // 
             this.yeniToolStripMenuItem.Name = "yeniToolStripMenuItem";
             this.yeniToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.yeniToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.yeniToolStripMenuItem.Text = "Yeni";
             this.yeniToolStripMenuItem.Click += new System.EventHandler(this.yeniToolStripMenuItem_Click);
             // 
             // yukleToolStripMenuItem
             // 
             this.yukleToolStripMenuItem.Name = "yukleToolStripMenuItem";
-            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.yukleToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.yukleToolStripMenuItem.Text = "Yükle";
             this.yukleToolStripMenuItem.Click += new System.EventHandler(this.yukleToolStripMenuItem_Click);
             // 
@@ -140,7 +143,7 @@
             // 
             this.saveAsMenu.Enabled = false;
             this.saveAsMenu.Name = "saveAsMenu";
-            this.saveAsMenu.Size = new System.Drawing.Size(152, 22);
+            this.saveAsMenu.Size = new System.Drawing.Size(156, 22);
             this.saveAsMenu.Text = "Farklı Kaydet";
             this.saveAsMenu.Click += new System.EventHandler(this.kaydetToolStripMenuItem_Click);
             // 
@@ -156,7 +159,7 @@
             // cikisToolStripMenuItem
             // 
             this.cikisToolStripMenuItem.Name = "cikisToolStripMenuItem";
-            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cikisToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.cikisToolStripMenuItem.Text = "Çıkış";
             this.cikisToolStripMenuItem.Click += new System.EventHandler(this.cikisToolStripMenuItem_Click);
             // 
@@ -171,7 +174,7 @@
             // hakkindaToolStripMenuItem
             // 
             this.hakkindaToolStripMenuItem.Name = "hakkindaToolStripMenuItem";
-            this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hakkindaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.hakkindaToolStripMenuItem.Text = "Hakkında";
             this.hakkindaToolStripMenuItem.Click += new System.EventHandler(this.hakkindaToolStripMenuItem_Click);
             // 
@@ -374,6 +377,22 @@
             this.graph1.TabIndex = 1;
             this.graph1.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph1.WaveData")));
             // 
+            // manuelBasinc
+            // 
+            this.manuelBasinc.Location = new System.Drawing.Point(946, 340);
+            this.manuelBasinc.Name = "manuelBasinc";
+            this.manuelBasinc.Size = new System.Drawing.Size(53, 20);
+            this.manuelBasinc.TabIndex = 12;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(957, 324);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "MP";
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -382,6 +401,8 @@
             this.BackColor = System.Drawing.SystemColors.Window;
             this.BackgroundImage = global::PressControl.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(1011, 509);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.manuelBasinc);
             this.Controls.Add(this.comPortList);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnStop);
@@ -405,6 +426,7 @@
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.manuelBasinc)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -444,6 +466,8 @@
         public System.Windows.Forms.ToolStripStatusLabel incomingData;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.ToolStripStatusLabel ConnectionStatus;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.NumericUpDown manuelBasinc;
 
     }
 }
