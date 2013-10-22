@@ -22,6 +22,8 @@ namespace PressControl
         public NewForm NewForm { get; set; }
         public Timer ConnectionTimer { get; set; }
 
+        public SuperTimer TestFeedTimer { get; set; }
+
         public App()
         {
             InitializeComponent();
@@ -40,11 +42,30 @@ namespace PressControl
             ConnectionTimer.Interval = 1000 * 1;
             ConnectionTimer.Start();
 
+            TestFeedTimer = new SuperTimer();
+            TestFeedTimer.Mode = TimerMode.Periodic;
+            TestFeedTimer.Resolution = 1;
+            TestFeedTimer.SynchronizingObject = this;
+            TestFeedTimer.Tick += new System.EventHandler(TestFeedTimer_Tick);
+            TestFeedTimer.Period = 20;
+            TestFeedTimer.Start();
+
             DataPort.BaudRate = 57600;
             //for (var j = 0; j < 100; j++)
             //{
             //    graph2.AddData(j);
             //}
+        }
+
+        void TestFeedTimer_Tick(object sender, EventArgs e)
+        {
+            if (this.Playing)
+            {                
+                var rnd = new Random();    
+                var value = -100 + rnd.Next(200);
+                var data = Convert.ToInt32(value);
+                RelayData(data);
+            }
         }
 
         void ConnectionTimer_Tick(object sender, EventArgs e)
@@ -64,6 +85,7 @@ namespace PressControl
         public void RelayData(int data)
         {
             graph2.AddData(data, true);
+            graph2.Refresh();
         }
 
         public void PrintConnectionStatus()
@@ -101,7 +123,7 @@ namespace PressControl
             var finish = port.ReadByte();
 
             incomingData.Text = data.ToString() + "(" + graph2.WaveData.Count() + ")";
-            graph2.AddData(data-110);
+            graph2.AddData(data - 110);
         }
 
 

@@ -31,6 +31,7 @@ namespace PressControl
         public Brush CursorPen { get; set; }
 
         public SuperTimer Timer { get; set; }
+
         public int X1 = 30;
         public double DataXOffset = 0;
         public int DataYOffset = 0;
