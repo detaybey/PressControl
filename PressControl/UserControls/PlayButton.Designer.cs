@@ -1,6 +1,6 @@
-﻿namespace ToggleButton
+﻿namespace PressControl
 {
-    partial class toggleButton
+    partial class PlayButton
     {
         /// <summary>
         /// Required designer variable.
@@ -29,26 +29,27 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(toggleButton));
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayButton));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.SuspendLayout();
             // 
-            // imageList
+            // imageList1
             // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "saw_off.png");
-            this.imageList.Images.SetKeyName(1, "saw_on.png");
-            this.imageList.Images.SetKeyName(2, "square_off.png");
-            this.imageList.Images.SetKeyName(3, "square_on.png");
-            this.imageList.Images.SetKeyName(4, "triangle_off.png");
-            this.imageList.Images.SetKeyName(5, "triangle_on.png");
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "PAUSE.png");
+            this.imageList1.Images.SetKeyName(1, "PAUSE_ON.png");
+            this.imageList1.Images.SetKeyName(2, "PLAY.png");
+            this.imageList1.Images.SetKeyName(3, "PLAY_ON.png");
+            this.imageList1.Images.SetKeyName(4, "PLAYLOOP.png");
+            this.imageList1.Images.SetKeyName(5, "PLAYLOOP_ON.png");
+            this.imageList1.Images.SetKeyName(6, "stop.png");
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

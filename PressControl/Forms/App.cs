@@ -60,8 +60,8 @@ namespace PressControl
         void TestFeedTimer_Tick(object sender, EventArgs e)
         {
             if (this.Playing)
-            {                
-                var rnd = new Random();    
+            {
+                var rnd = new Random();
                 var value = -100 + rnd.Next(200);
                 var data = Convert.ToInt32(value);
                 RelayData(data);
@@ -134,22 +134,28 @@ namespace PressControl
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            this.Loop = false;
-            this.Playing = true;
-            btnPlay.IsOn = true;
-            btnPause.IsOn = false;
-            btnPlayLoop.IsOn = false;
-            graph1.Start();
+            if (this.graph1.WaveData.Count() > 0)
+            {
+                this.Loop = false;
+                this.Playing = true;
+                btnPlay.IsOn = true;
+                btnPause.IsOn = false;
+                btnPlayLoop.IsOn = false;
+                graph1.Start();
+            }
         }
 
         private void btnPlayLoop_Click(object sender, EventArgs e)
         {
-            this.Playing = true;
-            this.Loop = true;
-            btnPlay.IsOn = false;
-            btnPause.IsOn = false;
-            btnPlayLoop.IsOn = true;
-            graph1.Start();
+            if (this.graph1.WaveData.Count() > 0)
+            {
+                this.Playing = true;
+                this.Loop = true;
+                btnPlay.IsOn = false;
+                btnPause.IsOn = false;
+                btnPlayLoop.IsOn = true;
+                graph1.Start();
+            }
         }
 
         private void btnPause_Click(object sender, EventArgs e)
@@ -229,7 +235,6 @@ namespace PressControl
             var box = new AboutBox();
             box.Show();
         }
-
 
         private void comPortList_SelectedIndexChanged(object sender, EventArgs e)
         {

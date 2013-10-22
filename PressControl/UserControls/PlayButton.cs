@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ToggleButton
+namespace PressControl
 {
-    public partial class toggleButton : Button
+    public partial class PlayButton: Button
     {
         private bool isOn { get; set; }
         private Type type { get; set; }
@@ -27,7 +27,7 @@ namespace ToggleButton
             set { type = value; Invalidate(); }
         }
 
-        public toggleButton()
+        public PlayButton()
         {
             InitializeComponent();
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
@@ -37,11 +37,11 @@ namespace ToggleButton
             this.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.FlatAppearance.CheckedBackColor = System.Drawing.Color.Transparent;
-            //this.Click += new System.EventHandler(this.ButtonClick);
-            this.type = ToggleButton.Type.SawTooth;
+            this.type = Type.Play;
             this.MouseHover += toggleButton_MouseHover;
             this.MouseEnter += toggleButton_MouseEnter;
         }
+
 
         void toggleButton_MouseEnter(object sender, EventArgs e)
         {
@@ -53,47 +53,47 @@ namespace ToggleButton
             return;
         }
 
-        //private void ButtonClick(object sender, EventArgs e)
-        //{
-        //    this.isOn = !this.isOn;
-        //}
-
         protected override void OnPaint(PaintEventArgs pe)
         {
-            this.Width = 74;
-            this.Height = 77;
+            this.Width = 48;
+            this.Height = 47;
             base.OnPaint(pe);
             pe.Graphics.FillRectangle(new SolidBrush(Color.Transparent), new Rectangle(0, 0, this.Width, this.Height));
 
             var name = "";
             switch (this.type)
             {
-                case ToggleButton.Type.SawTooth:
-                    name = "saw";
+                case Type.Pause:
+                    name = "PAUSE";
                     break;
-                case ToggleButton.Type.Square:
-                    name = "square";
+                case Type.Play:
+                    name = "PLAY";
                     break;
-                case ToggleButton.Type.Triangle:
-                    name = "triangle";
+                case Type.PlayLoop:
+                    name = "PLAYLOOP";
+                    break;
+                case Type.Stop:
+                    name = "STOP";
                     break;
             }
-            if (this.isOn)
+
+            if (this.isOn && this.type != Type.Stop)
             {
                 name += "_on.png";
             }
             else
             {
-                name += "_off.png";
+                name += ".png";
             }
-            pe.Graphics.DrawImage(imageList.Images[name], new Point(0, 0));
+            pe.Graphics.DrawImage(imageList1.Images[name], new Point(0, 0));
         }
     }
 
     public enum Type
     {
-        SawTooth = 1,
-        Triangle = 2,
-        Square = 3,
+        Play = 1,
+        PlayLoop = 2,
+        Pause = 3,
+        Stop = 4
     }
 }

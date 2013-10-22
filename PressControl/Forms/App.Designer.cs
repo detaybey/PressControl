@@ -54,10 +54,10 @@
             this.comPortList = new System.Windows.Forms.ComboBox();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.incomingData = new System.Windows.Forms.ToolStripStatusLabel();
-            this.btnStop = new PlayButton.PlayButton();
-            this.btnPause = new PlayButton.PlayButton();
-            this.btnPlayLoop = new PlayButton.PlayButton();
-            this.btnPlay = new PlayButton.PlayButton();
+            this.btnStop = new PlayButton();
+            this.btnPause = new PlayButton();
+            this.btnPlayLoop = new PlayButton();
+            this.btnPlay = new PlayButton();
             this.graph2 = new PressControl.Graph();
             this.graph1 = new PressControl.Graph();
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -276,7 +276,7 @@
             this.btnStop.Size = new System.Drawing.Size(48, 47);
             this.btnStop.TabIndex = 9;
             this.btnStop.Text = "playButton4";
-            this.btnStop.Type = PlayButton.Type.Stop;
+            this.btnStop.Type = Type.Stop;
             this.btnStop.UseVisualStyleBackColor = false;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -294,7 +294,7 @@
             this.btnPause.Size = new System.Drawing.Size(48, 47);
             this.btnPause.TabIndex = 8;
             this.btnPause.Text = "playButton3";
-            this.btnPause.Type = PlayButton.Type.Pause;
+            this.btnPause.Type = Type.Pause;
             this.btnPause.UseVisualStyleBackColor = false;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
@@ -312,7 +312,7 @@
             this.btnPlayLoop.Size = new System.Drawing.Size(48, 47);
             this.btnPlayLoop.TabIndex = 7;
             this.btnPlayLoop.Text = "playButton2";
-            this.btnPlayLoop.Type = PlayButton.Type.PlayLoop;
+            this.btnPlayLoop.Type = Type.PlayLoop;
             this.btnPlayLoop.UseVisualStyleBackColor = false;
             this.btnPlayLoop.Click += new System.EventHandler(this.btnPlayLoop_Click);
             // 
@@ -330,7 +330,7 @@
             this.btnPlay.Size = new System.Drawing.Size(48, 47);
             this.btnPlay.TabIndex = 6;
             this.btnPlay.Text = "playButton1";
-            this.btnPlay.Type = PlayButton.Type.Play;
+            this.btnPlay.Type = Type.Play;
             this.btnPlay.UseVisualStyleBackColor = false;
             this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
@@ -422,10 +422,10 @@
         private System.Windows.Forms.ToolStripMenuItem yardimToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hakkindaToolStripMenuItem;
         private System.Windows.Forms.ImageList buttonList;
-        private PlayButton.PlayButton btnPlay;
-        private PlayButton.PlayButton btnPlayLoop;
-        private PlayButton.PlayButton btnPause;
-        private PlayButton.PlayButton btnStop;
+        private PlayButton btnPlay;
+        private PlayButton btnPlayLoop;
+        private PlayButton btnPause;
+        private PlayButton btnStop;
         private System.Windows.Forms.ToolStripMenuItem temizleToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
