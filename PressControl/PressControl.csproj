@@ -187,7 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomScrollBar\CustomScrollBar.csproj">
-      <Project>{80C7DC34-E1F6-4DA8-AFFB-904C06A3623B}</Project>
+      <Project>{80c7dc34-e1f6-4da8-affb-904c06a3623b}</Project>
       <Name>CustomScrollBar</Name>
     </ProjectReference>
   </ItemGroup>

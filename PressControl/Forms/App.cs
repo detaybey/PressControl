@@ -18,7 +18,7 @@ namespace PressControl
     {
         public bool Loop { get; set; }
         public bool Playing { get; set; }
-        public string AppName = "UMPC v1.0 ";
+        public string AppName = "UMPC v1.1 ";
         public NewForm NewForm { get; set; }
         public Timer ConnectionTimer { get; set; }
         public SuperTimer ReadTimer { get; set; }
@@ -28,6 +28,8 @@ namespace PressControl
         private int LastReadValue2 = 0;
         private int LastReadValue3 = 0;
         private int LastReadValue4 = 0;
+
+        private int LastXOffset = 0;
 
         public App()
         {
@@ -40,13 +42,14 @@ namespace PressControl
             this.Playing = false;
             this.Loop = false;
 
-            this.graph1.SetBase(this, false);
-            this.graph2.SetBase(this, true);
+            this.graph1.SetBase(this);
 
             ConnectionTimer = new Timer();
             ConnectionTimer.Tick += ConnectionTimer_Tick;
             ConnectionTimer.Interval = 1000 * 1;
             ConnectionTimer.Start();
+
+            DataPort.BaudRate = 57600;
 
             ReadTimer = new SuperTimer();
             ReadTimer.Mode = TimerMode.Periodic;
@@ -54,12 +57,19 @@ namespace PressControl
             ReadTimer.Period = 20;
             ReadTimer.Resolution = 1;
             ReadTimer.SynchronizingObject = this.graph1;
-            DataPort.BaudRate = 57600;
+
         }
 
         void ReadTimer_Tick(object sender, EventArgs e)
         {
-            graph2.AddData(LastReadValue, true);
+            if (graph1.ReadData.Count > graph1.DataXOffset)
+            {
+                for (var j = LastXOffset; j <= graph1.DataXOffset;j++)
+                {
+                    graph1.ReadData[j] = LastReadValue;
+                }
+                LastXOffset = Convert.ToInt16(graph1.DataXOffset);
+            }
         }
 
 
@@ -71,6 +81,10 @@ namespace PressControl
         public void SetDataForm(WaveSegment segment)
         {
             graph1.WaveData.AddRange(segment.Data);
+            foreach (var i in segment.Data)
+            {
+                graph1.ReadData.Add(0);
+            }
             graph1.Changed = true;
             saveMenu.Enabled = true;
             saveAsMenu.Enabled = true;
@@ -107,21 +121,10 @@ namespace PressControl
 
         void DataPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //try
-            //{
             var port = (SerialPort)sender;
             while (port.BytesToRead > 0)
             {
                 LastReadValue2 = port.ReadByte() - 110;
-                //this.Invoke((MethodInvoker)delegate
-                //{
-                //    LogBox.Text += LastReadValue2 + ", ";
-                //    if (LogBox.Text.Length > 1500)
-                //    {
-                //        LogBox.Text = "";
-                //    }
-
-                //});
 
                 if (LastReadValue2 == LastReadValue3 && LastReadValue2 == LastReadValue4)
                 {
@@ -148,11 +151,13 @@ namespace PressControl
                 //    }
                 //}
             }
-            //}
-            //catch (Exception)
-            //{
-            //    LastReadValue = 0;
-            //}
+            try
+            {
+            }
+            catch (Exception)
+            {
+                LastReadValue = 0;
+            }
         }
 
 
@@ -198,7 +203,7 @@ namespace PressControl
             graph1.Pause();
             ReadTimer.Stop();
             SendStopData();
- 
+
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -222,7 +227,7 @@ namespace PressControl
                     graph1.DataBuffer[0] = 0;
                     graph1.DataBuffer[1] = 0;
                     graph1.DataBuffer[2] = 1;
-                    graph1.DataBuffer[3] = (byte)(manuelBasinc.Value+110);
+                    graph1.DataBuffer[3] = (byte)(manuelBasinc.Value + 110);
                     graph1.DataBuffer[4] = 255;
                     DataPort.Write(graph1.DataBuffer, 0, 5);
                 }
@@ -234,7 +239,7 @@ namespace PressControl
             var msg = MessageBox.Show("Emin misiniz?", "Siliniyor?", MessageBoxButtons.YesNo);
             if (msg == System.Windows.Forms.DialogResult.Yes)
             {
-                graph2.WaveData.Clear();
+                //graph2.WaveData.Clear();
                 graph1.WaveData.Clear();
                 graph1.Changed = false;
                 graph1.Refresh();
@@ -250,7 +255,7 @@ namespace PressControl
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 graph1.Load(openFileDialog1.FileName);
-                graph2.WaveData.Clear();
+                //graph2.WaveData.Clear();
             }
         }
 

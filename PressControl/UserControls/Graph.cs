@@ -25,6 +25,8 @@ namespace PressControl
         public Pen BorderPen { get; set; }
         public Pen ThinPen { get; set; }
         public Pen DataPen { get; set; }
+        public Pen ReadPen1 { get; set; }
+        public Pen ReadPen2 { get; set; }
         public Pen ThinnestPen { get; set; }
         public Pen TimePen { get; set; }
         public Brush CursorPen { get; set; }
@@ -40,9 +42,8 @@ namespace PressControl
         public PointF timerPoint;
         public byte[] DataBuffer;
         public bool Changed { get; set; }
-        public bool ReadOnly { get; set; }
-
         public List<double> WaveData { get; set; }
+        public List<double> ReadData { get; set; }
 
         public Stream Logstream { get; set; }
 
@@ -51,46 +52,49 @@ namespace PressControl
         /// </summary>
         public Graph()
         {
+
             InitializeComponent();
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 
             // set arrays
             DataBuffer = new byte[5];
             WaveData = new List<double>();
+            ReadData = new List<double>();
 
             // visual styling
             BorderPen = new Pen(Color.Gray);
             ThinPen = new Pen(Color.LightGray);
             ThinnestPen = new Pen(Color.FromArgb(100, 210, 210, 210));
-            DataPen = new Pen(Color.LightGreen, 2f);
+            DataPen = new Pen(Color.LightGreen, 3f);
             MiniFont = new Font("Tahoma", 8);
             Brush = new SolidBrush(Color.Black);
             SecondsBrush = new SolidBrush(Color.Gray);
             BgBrush = new SolidBrush(Color.White);
             DataBrush = new SolidBrush(Color.LightGreen);
+            ReadPen1 = new Pen(Color.Magenta, 2);
+            ReadPen2 = new Pen(Color.Lime, 1);
+
             TimePen = new Pen(Color.Red);
             CursorPen = new SolidBrush(Color.Orange);
 
             // timer for sending data over time (every 20ms)
-            if (!this.ReadOnly)
-            {
-                Timer = new SuperTimer();
-                Timer.Mode = TimerMode.Periodic;
-                Timer.Period = 20;   //         50 times a second , 1000/50
-                Timer.Resolution = 1;
-                Timer.SynchronizingObject = this;
-                Timer.Tick += new System.EventHandler(this.Timer_Tick);
-                startTime = DateTime.Now;
-                timerPoint = new PointF(this.Width - 50, this.Height - 8);
-                Changed = false;
-            }
+
+            Timer = new SuperTimer();
+            Timer.Mode = TimerMode.Periodic;
+            Timer.Period = 20;   //         50 times a second , 1000/50
+            Timer.Resolution = 1;
+            Timer.SynchronizingObject = this;
+            Timer.Tick += new System.EventHandler(this.Timer_Tick);
+            startTime = DateTime.Now;
+            timerPoint = new PointF(this.Width - 50, this.Height - 8);
+            Changed = false;
+
         }
 
         // sets the link between the app and the graph component
-        public void SetBase(App app, bool isReadOnly)
+        public void SetBase(App app)
         {
             this.Base = app;
-            this.ReadOnly = isReadOnly;
         }
 
 
@@ -106,82 +110,68 @@ namespace PressControl
         // loads a saved signal data
         public void Load(string name)
         {
-            if (!this.ReadOnly)
+            this.Name = System.IO.Path.GetFileName(name);
+            this.Base.Text = this.Base.AppName + this.Name;
+            using (var stream = new FileStream(name, FileMode.Open))
             {
-                this.Name = System.IO.Path.GetFileName(name);
-                this.Base.Text = this.Base.AppName + this.Name;
-                using (var stream = new FileStream(name, FileMode.Open))
+                var bf = new BinaryFormatter();
+                this.WaveData = (List<double>)bf.Deserialize(stream);
+                this.ReadData = new List<double>();
+                foreach (var i in this.WaveData)
                 {
-                    var bf = new BinaryFormatter();
-                    this.WaveData = (List<double>)bf.Deserialize(stream);
-                    this.Refresh();
+                    this.ReadData.Add(0);
                 }
-
+                this.Refresh();
             }
         }
 
         // saves the signal data
         public void Save()
         {
-            if (!this.ReadOnly)
-            {
-                SaveAs(this.Name);
-            }
+            SaveAs(this.Name);
         }
 
         // saves the signal data with a different name
         public void SaveAs(string name)
         {
-            if (!this.ReadOnly)
+            if (this.WaveData.Count == 0)
             {
-                if (this.WaveData.Count == 0)
-                {
-                    return;
-                }
+                return;
+            }
 
-                this.Name = System.IO.Path.GetFileName(name);
-                this.Base.Text = this.Base.AppName + this.Name;
+            this.Name = System.IO.Path.GetFileName(name);
+            this.Base.Text = this.Base.AppName + this.Name;
 
-                using (var stream = new FileStream(name, FileMode.Create))
-                {
-                    var bf = new BinaryFormatter();
-                    bf.Serialize(stream, this.WaveData);
-                }
+            using (var stream = new FileStream(name, FileMode.Create))
+            {
+                var bf = new BinaryFormatter();
+                bf.Serialize(stream, this.WaveData);
             }
         }
 
         // starts sending the signal 
         public void Start()
         {
-            if (!this.ReadOnly)
+            startTime = DateTime.Now;
+            if (this.WaveData.Count == 0)
             {
-                startTime = DateTime.Now;
-                if (this.WaveData.Count == 0)
-                {
-                    return;
-                }
-                Timer.Start();
+                return;
             }
+            Timer.Start();
         }
 
         // pauses sending the signal
         public void Pause()
         {
-            if (!this.ReadOnly)
-            {
-                Timer.Stop();
-            }
+            Timer.Stop();
         }
 
         // stops the signal
         public void Stop()
         {
-            if (!this.ReadOnly)
-            {
-                this.DataXOffset = 0;
-                this.Refresh();
-                Timer.Stop();
-            }
+            this.DataXOffset = 0;
+            this.Refresh();
+            Timer.Stop();
         }
 
         /// <summary>
@@ -189,42 +179,41 @@ namespace PressControl
         /// </summary>
         void Timer_Tick(object sender, EventArgs e)
         {
-            if (!this.ReadOnly)
+
+            if (this.WaveData.Count == 0)
             {
-                if (this.WaveData.Count == 0)
-                {
-                    return;
-                }
-                var maxX = this.WaveData.Count;
-
-                DataXOffset = DataXOffset + 1;
-                if (DataXOffset >= maxX)
-                {
-                    DataXOffset = 0;
-                    startTime = DateTime.Now;
-                    if (!Base.Loop)
-                    {
-                        Stop();
-                        this.Base.Playing = false;
-                    }
-                }
-                DataYOffset = Convert.ToInt32(this.WaveData[Convert.ToInt32(DataXOffset)]);
-
-                // send the current data to port if the port is available
-                if (this.Base.DataPort.IsOpen)
-                {
-                    DataBuffer[0] = 0;
-                    DataBuffer[1] = (byte)(DataYOffset + 110);
-                    DataBuffer[2] = (byte)(this.Base.Playing == true ? 2 : 1);
-                    DataBuffer[3] = (byte)(this.Base.manuelBasinc.Value + 110);
-                    DataBuffer[4] = 255;
-                    this.Base.DataPort.Write(DataBuffer, 0, 5);
-                    //this.Base.RelayData(DataYOffset);
-                }
-                endTime = DateTime.Now;
-                ts_timeElapsed = (endTime - startTime);
-                this.Refresh();
+                return;
             }
+            var maxX = this.WaveData.Count;
+
+            DataXOffset = DataXOffset + 1;
+            if (DataXOffset >= maxX)
+            {
+                DataXOffset = 0;
+                startTime = DateTime.Now;
+                if (!Base.Loop)
+                {
+                    Stop();
+                    this.Base.Playing = false;
+                }
+            }
+            DataYOffset = Convert.ToInt32(this.WaveData[Convert.ToInt32(DataXOffset)]);
+
+            // send the current data to port if the port is available
+            if (this.Base.DataPort.IsOpen)
+            {
+                DataBuffer[0] = 0;
+                DataBuffer[1] = (byte)(DataYOffset + 110);
+                DataBuffer[2] = (byte)(this.Base.Playing == true ? 2 : 1);
+                DataBuffer[3] = (byte)(this.Base.manuelBasinc.Value + 110);
+                DataBuffer[4] = 255;
+                this.Base.DataPort.Write(DataBuffer, 0, 5);
+                //this.Base.RelayData(DataYOffset);
+            }
+            endTime = DateTime.Now;
+            ts_timeElapsed = (endTime - startTime);
+            this.Refresh();
+
         }
 
         /// <summary>
@@ -265,7 +254,7 @@ namespace PressControl
                 scrollBarEx1.Visible = true;
                 scrollBarEx1.Minimum = 0;
                 scrollBarEx1.Maximum = this.WaveData.Count - this.Width - 1;
-                //scrollBar.LargeChange = this.WaveData.Count - this.Width - 1;
+    
             }
             else
             {
@@ -290,7 +279,7 @@ namespace PressControl
                 {
                     pe.Graphics.DrawLine(ThinPen, new Point(j - Xoffset, Y1 + (H1 / 2) - 9), new Point(j - Xoffset, Y1 + (H1 / 2) + 9));
                     pe.Graphics.DrawLine(ThinnestPen, new Point(j - Xoffset, Y1), new Point(j - Xoffset, Y1 + H1));
-                    if ((j - X1) % 250 == 0 && this.ReadOnly == false)
+                    if ((j - X1) % 250 == 0)
                     {
                         var secs = ((j - X1) / 50) + (ScrollOffset / 250) * 5;
                         pe.Graphics.DrawString(secs.ToString(), MiniFont, SecondsBrush, new Point(j - (ScrollOffset % 250), Y1 + (H1 / 2)));
@@ -308,39 +297,36 @@ namespace PressControl
 
             double x0 = X1;
             int y0 = Convert.ToInt16(Y1 + (H1 / 2) - this.WaveData[0 + ScrollOffset]);
+            var ry0 = Convert.ToInt16(Y1 + (H1 / 2) - this.ReadData[0 + ScrollOffset]);
+
+            int y;
+            short ry;
             for (var j = 0; j < this.Width - 1; j++)
             {
                 if ((j + ScrollOffset) >= this.WaveData.Count)
                 {
                     break;
                 }
-                var value = this.WaveData[j + ScrollOffset];
                 double x = x0 + 1;
-                var y = Convert.ToInt16(Y1 + (H1 / 2) - value);
+                y = Convert.ToInt16(Y1 + (H1 / 2) - this.WaveData[j + ScrollOffset]);
+                ry = Convert.ToInt16(Y1 + (H1 / 2) - this.ReadData[j + ScrollOffset]);
                 pe.Graphics.DrawLine(DataPen, Convert.ToInt32(x0), y0, Convert.ToInt32(x), y);
+                pe.Graphics.DrawLine(ReadPen1, Convert.ToInt32(x0), ry0, Convert.ToInt32(x), ry);
+
                 x0 = Convert.ToInt16(x);
                 y0 = y;
+                ry0 = ry;
             }
 
-            if (!this.ReadOnly)
+            if (this.Base.Playing)
             {
-                if (this.Base.Playing)
-                {
-                    pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1 - ScrollOffset), 0, Convert.ToInt32(DataXOffset + X1 - ScrollOffset), H1);
-                    pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5 - ScrollOffset), (H1 / 2) - 5 - DataYOffset, 10, 10);
+                pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1 - ScrollOffset), 0, Convert.ToInt32(DataXOffset + X1 - ScrollOffset), H1);
+                pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5 - ScrollOffset), (H1 / 2) - 5 - DataYOffset, 10, 10);
 
-                    this.Base.WaveTime.Text = ts_timeElapsed.ToString();
-                    this.Base.WaveValue.Text = DataYOffset.ToString();
-                }
+                this.Base.WaveTime.Text = ts_timeElapsed.ToString();
+                this.Base.WaveValue.Text = DataYOffset.ToString();
             }
-            else
-            {
-                DataXOffset = this.WaveData.Count;
-                DataYOffset = Convert.ToInt16(this.WaveData.Last());
 
-                pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1), 0, Convert.ToInt32(DataXOffset + X1), H1);
-                pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5), (H1 / 2) - 5 - DataYOffset, 10, 10);
-            }
         }
 
         public void AddData(double data, bool resetOnMax = true)
@@ -350,7 +336,7 @@ namespace PressControl
             {
                 if (this.WaveData.Count > this.Width - X1)
                 {
-                  this.WaveData.Clear();
+                    this.WaveData.Clear();
                 }
             }
             this.Invoke((MethodInvoker)delegate
