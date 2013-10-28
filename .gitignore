@@ -24,3 +24,17 @@
 /PressControl/PressControl.csproj.user
 
 /PressControl/PressControl.v12.suo
+
+/CustomScrollBar/bin/Release/CustomScrollBar.dll
+/CustomScrollBar/bin/Release/CustomScrollBar.dll.config
+/CustomScrollBar/bin/Release/CustomScrollBar.pdb
+/CustomScrollBar/obj/Release/CustomScrollBar.Properties.ScrollBarResources.resources
+/CustomScrollBar/obj/Release/CustomScrollBar.ScrollBarEx.resources
+/CustomScrollBar/obj/Release/CustomScrollBar.csproj.FileListAbsolute.txt
+/CustomScrollBar/obj/Release/CustomScrollBar.csproj.GenerateResource.Cache
+/CustomScrollBar/obj/Release/CustomScrollBar.csprojResolveAssemblyReference.cache
+/CustomScrollBar/obj/Release/CustomScrollBar.dll
+/CustomScrollBar/obj/Release/CustomScrollBar.pdb
+/CustomScrollBar/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+/CustomScrollBar/obj/Release/TempPE/Properties.ScrollBarResources.Designer.cs.dll
+/PressControl/UpgradeLog.htm

@@ -28,23 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.scrollBar = new System.Windows.Forms.HScrollBar();
+            this.components = new System.ComponentModel.Container();
+            this.scrollBarEx1 = new CustomScrollBar.ScrollBarEx();
             this.SuspendLayout();
             // 
-            // scrollBar
+            // scrollBarEx1
             // 
-            this.scrollBar.Location = new System.Drawing.Point(0, 174);
-            this.scrollBar.Maximum = 50;
-            this.scrollBar.Name = "scrollBar";
-            this.scrollBar.Size = new System.Drawing.Size(671, 17);
-            this.scrollBar.TabIndex = 0;
-            this.scrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollBar_Scroll);
+            this.scrollBarEx1.BorderColor = System.Drawing.Color.White;
+            this.scrollBarEx1.Location = new System.Drawing.Point(3, 169);
+            this.scrollBarEx1.Name = "scrollBarEx1";
+            this.scrollBarEx1.Orientation = CustomScrollBar.ScrollBarOrientation.Horizontal;
+            this.scrollBarEx1.Size = new System.Drawing.Size(200, 19);
+            this.scrollBarEx1.TabIndex = 0;
+            this.scrollBarEx1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.scrollBarEx1_Scroll);
             // 
             // Graph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.scrollBar);
+            this.Controls.Add(this.scrollBarEx1);
             this.Name = "Graph";
             this.Size = new System.Drawing.Size(671, 191);
             this.ResumeLayout(false);
@@ -53,6 +55,7 @@
 
         #endregion
 
-        private System.Windows.Forms.HScrollBar scrollBar;
+        private CustomScrollBar.ScrollBarEx scrollBarEx1;
+
     }
 }

@@ -56,14 +56,14 @@
             this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.comPortList = new System.Windows.Forms.ComboBox();
+            this.manuelBasinc = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnStop = new PressControl.PlayButton();
             this.btnPause = new PressControl.PlayButton();
             this.btnPlayLoop = new PressControl.PlayButton();
             this.btnPlay = new PressControl.PlayButton();
             this.graph2 = new PressControl.Graph();
             this.graph1 = new PressControl.Graph();
-            this.manuelBasinc = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.manuelBasinc)).BeginInit();
@@ -99,7 +99,7 @@
             this.yardimToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1011, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1012, 24);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -213,7 +213,7 @@
             this.ConnectionStatus});
             this.statusStrip1.Location = new System.Drawing.Point(0, 487);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1011, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1012, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.Stretch = false;
             this.statusStrip1.TabIndex = 10;
@@ -280,6 +280,24 @@
             this.comPortList.TabIndex = 11;
             this.comPortList.Text = "??";
             this.comPortList.SelectedIndexChanged += new System.EventHandler(this.comPortList_SelectedIndexChanged);
+            // 
+            // manuelBasinc
+            // 
+            this.manuelBasinc.Location = new System.Drawing.Point(946, 340);
+            this.manuelBasinc.Name = "manuelBasinc";
+            this.manuelBasinc.Size = new System.Drawing.Size(53, 20);
+            this.manuelBasinc.TabIndex = 12;
+            this.manuelBasinc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.manuelBasinc.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(957, 324);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "MP";
             // 
             // btnStop
             // 
@@ -358,6 +376,7 @@
             this.graph2.Base = null;
             this.graph2.Changed = false;
             this.graph2.Location = new System.Drawing.Point(11, 282);
+            this.graph2.Logstream = null;
             this.graph2.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph2.Name = "graph2";
             this.graph2.ReadOnly = false;
@@ -370,28 +389,13 @@
             this.graph1.Base = null;
             this.graph1.Changed = false;
             this.graph1.Location = new System.Drawing.Point(11, 49);
+            this.graph1.Logstream = null;
             this.graph1.MiniFont = new System.Drawing.Font("Tahoma", 8F);
             this.graph1.Name = "graph1";
             this.graph1.ReadOnly = false;
             this.graph1.Size = new System.Drawing.Size(919, 204);
             this.graph1.TabIndex = 1;
             this.graph1.WaveData = ((System.Collections.Generic.List<double>)(resources.GetObject("graph1.WaveData")));
-            // 
-            // manuelBasinc
-            // 
-            this.manuelBasinc.Location = new System.Drawing.Point(946, 340);
-            this.manuelBasinc.Name = "manuelBasinc";
-            this.manuelBasinc.Size = new System.Drawing.Size(53, 20);
-            this.manuelBasinc.TabIndex = 12;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(957, 324);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "MP";
             // 
             // App
             // 
@@ -400,7 +404,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.BackgroundImage = global::PressControl.Properties.Resources.background;
-            this.ClientSize = new System.Drawing.Size(1011, 509);
+            this.ClientSize = new System.Drawing.Size(1012, 509);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.manuelBasinc);
             this.Controls.Add(this.comPortList);
@@ -421,7 +425,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "App";
-            this.Text = "UMPC v1.0";
+            this.Text = "UMPC v1.1";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

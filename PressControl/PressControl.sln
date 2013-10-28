@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PressControl", "PressControl.csproj", "{39D5B046-933E-4A03-9206-39251EC2DD12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomScrollBar", "..\CustomScrollBar\CustomScrollBar.csproj", "{80C7DC34-E1F6-4DA8-AFFB-904C06A3623B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{39D5B046-933E-4A03-9206-39251EC2DD12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39D5B046-933E-4A03-9206-39251EC2DD12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39D5B046-933E-4A03-9206-39251EC2DD12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C7DC34-E1F6-4DA8-AFFB-904C06A3623B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C7DC34-E1F6-4DA8-AFFB-904C06A3623B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C7DC34-E1F6-4DA8-AFFB-904C06A3623B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C7DC34-E1F6-4DA8-AFFB-904C06A3623B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,8 +21,13 @@ namespace PressControl
         public string AppName = "UMPC v1.0 ";
         public NewForm NewForm { get; set; }
         public Timer ConnectionTimer { get; set; }
+        public SuperTimer ReadTimer { get; set; }
+        public List<int> ReadBuffer { get; set; }
 
-        public SuperTimer TestFeedTimer { get; set; }
+        private int LastReadValue = 0;
+        private int LastReadValue2 = 0;
+        private int LastReadValue3 = 0;
+        private int LastReadValue4 = 0;
 
         public App()
         {
@@ -31,6 +36,7 @@ namespace PressControl
 
             SetAvailableComPorts();
 
+            this.ReadBuffer = new List<int>();
             this.Playing = false;
             this.Loop = false;
 
@@ -42,27 +48,20 @@ namespace PressControl
             ConnectionTimer.Interval = 1000 * 1;
             ConnectionTimer.Start();
 
-            //TestFeedTimer = new SuperTimer();
-            //TestFeedTimer.Mode = TimerMode.Periodic;
-            //TestFeedTimer.Resolution = 1;
-            //TestFeedTimer.SynchronizingObject = this;
-            //TestFeedTimer.Tick += new System.EventHandler(TestFeedTimer_Tick);
-            //TestFeedTimer.Period = 20;
-            //TestFeedTimer.Start();
+            ReadTimer = new SuperTimer();
+            ReadTimer.Tick += ReadTimer_Tick;
+            ReadTimer.Period = 20;
+            ReadTimer.Resolution = 1;
+
 
             DataPort.BaudRate = 57600;
         }
 
-        void TestFeedTimer_Tick(object sender, EventArgs e)
+        void ReadTimer_Tick(object sender, EventArgs e)
         {
-            if (this.Playing)
-            {
-                var rnd = new Random();
-                var value = -100 + rnd.Next(200);
-                var data = Convert.ToInt32(value);
-                RelayData(data);
-            }
+            graph2.AddData(LastReadValue, true);
         }
+
 
         void ConnectionTimer_Tick(object sender, EventArgs e)
         {
@@ -78,11 +77,6 @@ namespace PressControl
             graph1.Refresh();
         }
 
-        public void RelayData(int data)
-        {
-            graph2.AddData(data, true);
-            graph2.Refresh();
-        }
 
         public void PrintConnectionStatus()
         {
@@ -113,13 +107,52 @@ namespace PressControl
 
         void DataPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            //try
+            //{
             var port = (SerialPort)sender;
-            int d0 = port.ReadByte();
-            int d1 = port.ReadByte();
-            int d2 = port.ReadByte();
+            while (port.BytesToRead > 0)
+            {
+                LastReadValue2 = port.ReadByte() - 110;
+                //this.Invoke((MethodInvoker)delegate
+                //{
+                //    LogBox.Text += LastReadValue2 + ", ";
+                //    if (LogBox.Text.Length > 1500)
+                //    {
+                //        LogBox.Text = "";
+                //    }
 
-            // incomingData.Text = data.ToString() + "(" + graph2.WaveData.Count() + ")";
-            graph2.AddData(d1 - 110);
+                //});
+
+                if (LastReadValue2 == LastReadValue3 && LastReadValue2 == LastReadValue4)
+                {
+                    LastReadValue = LastReadValue3;
+                }
+                LastReadValue4 = LastReadValue3;
+                LastReadValue3 = LastReadValue2;
+
+                //if (LastReadValue != 5)
+                //{
+                //    throw new Exception("5 degil!");
+                //}
+                incomingData.Text = LastReadValue.ToString();
+
+                //this.ReadBuffer.Add(port.ReadByte());
+                //if (this.ReadBuffer.Count == 3)
+                //{
+                //    if (this.ReadBuffer[0] == 0 && this.ReadBuffer[2] == 255)
+                //    {
+                //        var value = this.ReadBuffer[1] - 110;
+                //        incomingData.Text = value.ToString() + "(" + graph2.WaveData.Count() + ")";
+                //        graph2.AddData(value);
+                //        this.ReadBuffer.Clear();
+                //    }
+                //}
+            }
+            //}
+            //catch (Exception)
+            //{
+            //    LastReadValue = 0;
+            //}
         }
 
 
@@ -138,6 +171,7 @@ namespace PressControl
                 btnPause.IsOn = false;
                 btnPlayLoop.IsOn = false;
                 graph1.Start();
+                ReadTimer.Start();
             }
         }
 
@@ -151,6 +185,7 @@ namespace PressControl
                 btnPause.IsOn = false;
                 btnPlayLoop.IsOn = true;
                 graph1.Start();
+                ReadTimer.Start();
             }
         }
 
@@ -161,6 +196,9 @@ namespace PressControl
             btnPause.IsOn = true;
             btnPlayLoop.IsOn = false;
             graph1.Pause();
+            ReadTimer.Stop();
+            SendStopData();
+ 
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -170,6 +208,25 @@ namespace PressControl
             btnPause.IsOn = false;
             btnPlayLoop.IsOn = false;
             graph1.Stop();
+            ReadTimer.Stop();
+            SendStopData();
+        }
+
+
+        private void SendStopData()
+        {
+            if (DataPort.IsOpen)
+            {
+                for (var j = 0; j < 10; j++)
+                {
+                    graph1.DataBuffer[0] = 0;
+                    graph1.DataBuffer[1] = 0;
+                    graph1.DataBuffer[2] = 1;
+                    graph1.DataBuffer[3] = (byte)(manuelBasinc.Value);
+                    graph1.DataBuffer[4] = 255;
+                    DataPort.Write(graph1.DataBuffer, 0, 5);
+                }
+            }
         }
 
         private void temizleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -177,6 +234,7 @@ namespace PressControl
             var msg = MessageBox.Show("Emin misiniz?", "Siliniyor?", MessageBoxButtons.YesNo);
             if (msg == System.Windows.Forms.DialogResult.Yes)
             {
+                graph2.WaveData.Clear();
                 graph1.WaveData.Clear();
                 graph1.Changed = false;
                 graph1.Refresh();
@@ -192,6 +250,7 @@ namespace PressControl
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 graph1.Load(openFileDialog1.FileName);
+                graph2.WaveData.Clear();
             }
         }
 
@@ -237,6 +296,7 @@ namespace PressControl
             try
             {
                 DataPort.PortName = comPortList.Text;
+                DataPort.BaudRate = 57600;
                 DataPort.Open();
             }
             catch (Exception)

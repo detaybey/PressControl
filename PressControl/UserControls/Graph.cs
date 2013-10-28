@@ -28,6 +28,7 @@ namespace PressControl
         public Pen ThinnestPen { get; set; }
         public Pen TimePen { get; set; }
         public Brush CursorPen { get; set; }
+        public Brush SecondsBrush { get; set; }
         public SuperTimer Timer { get; set; }
 
         public int X1 = 30;
@@ -42,6 +43,8 @@ namespace PressControl
         public bool ReadOnly { get; set; }
 
         public List<double> WaveData { get; set; }
+
+        public Stream Logstream { get; set; }
 
         /// <summary>
         /// Initialize graph component.
@@ -62,6 +65,7 @@ namespace PressControl
             DataPen = new Pen(Color.LightGreen, 2f);
             MiniFont = new Font("Tahoma", 8);
             Brush = new SolidBrush(Color.Black);
+            SecondsBrush = new SolidBrush(Color.Gray);
             BgBrush = new SolidBrush(Color.White);
             DataBrush = new SolidBrush(Color.LightGreen);
             TimePen = new Pen(Color.Red);
@@ -86,9 +90,19 @@ namespace PressControl
         public void SetBase(App app, bool isReadOnly)
         {
             this.Base = app;
-            this.ReadOnly = isReadOnly;
+            this.ReadOnly = isReadOnly;           
         }
 
+
+        public void OpenLog()
+        {
+            if (Logstream.CanWrite)
+            {
+                Logstream.Flush();
+            }
+            Logstream = new FileStream(this.Name + ".log", FileMode.OpenOrCreate);
+
+        }
         // loads a saved signal data
         public void Load(string name)
         {
@@ -102,6 +116,7 @@ namespace PressControl
                     this.WaveData = (List<double>)bf.Deserialize(stream);
                     this.Refresh();
                 }
+
             }
         }
 
@@ -218,25 +233,41 @@ namespace PressControl
         /// <param name="pe"></param>
         protected override void OnPaint(PaintEventArgs pe)
         {
+
             // Calling the base class OnPaint
             base.OnPaint(pe);
             var X2 = this.Width - 1;
             var Y1 = 1;
             var H1 = this.Height - 2;
 
-            if (this.WaveData.Count > this.Width - OUTERWIDTH)
+            if (this.WaveData.Count > this.Width - X1)
             {
-                scrollBar.Left = 1;
-                scrollBar.Width = this.Width - 2;
-                scrollBar.Top = this.Height - 20;
-                scrollBar.Visible = true;
-                scrollBar.Minimum = 0;
-                scrollBar.Maximum = this.Width;
-                scrollBar.LargeChange = this.WaveData.Count - this.Width - 1;
+                if (this.DataXOffset <= (this.Width / 2))
+                {
+                    scrollBarEx1.Value = 0;
+                }
+
+                if (this.DataXOffset > (this.Width / 2))
+                {
+                    scrollBarEx1.Value = Convert.ToInt16(this.DataXOffset) - (this.Width / 2);
+                }
+
+                if ( this.DataXOffset > (this.WaveData.Count - this.Width))
+                {
+                    scrollBarEx1.Value = this.WaveData.Count;
+                }
+
+                scrollBarEx1.Left = 30;
+                scrollBarEx1.Width = this.Width - 32;
+                scrollBarEx1.Top = this.Height - 20;
+                scrollBarEx1.Visible = true;
+                scrollBarEx1.Minimum = 0;
+                scrollBarEx1.Maximum = this.WaveData.Count - this.Width - 1;
+                 //scrollBar.LargeChange = this.WaveData.Count - this.Width - 1;
             }
             else
             {
-                scrollBar.Visible = false;
+                scrollBarEx1.Visible = false;
             }
 
             pe.Graphics.FillRectangle(BgBrush, new Rectangle(0, 0, this.Width, this.Height));
@@ -245,14 +276,24 @@ namespace PressControl
             pe.Graphics.DrawLine(ThinPen, new Point(X1, Y1 + (H1 / 2)), new Point(X2, Y1 + (H1 / 2)));
             // left labels
             pe.Graphics.DrawString("+100", MiniFont, Brush, new Point(X1 - 30, Y1));
-            pe.Graphics.DrawString("0", MiniFont, Brush, new Point(X1 - 15, Y1 + (H1 / 2) - 7));
+//            pe.Graphics.DrawString("0", MiniFont, Brush, new Point(X1 - 15, Y1 + (H1 / 2) - 7));
             pe.Graphics.DrawString("-100", MiniFont, Brush, new Point(X1 - 28, Y1 + H1 - 14));
             // ticks on timeline
-            for (var j = X1; j < X2; j = j + 50)
+            for (var j = X1 ; j < X2 + 51 ; j = j + 50)
             {
+                var Xoffset = (ScrollOffset % 50);
+
                 //var tickSize = (j % (500 / Timer.Interval) == 0) ? 9 : 2;
-                pe.Graphics.DrawLine(ThinPen, new Point(j, Y1 + (H1 / 2) - 9), new Point(j, Y1 + (H1 / 2) + 9));
-                pe.Graphics.DrawLine(ThinnestPen, new Point(j, Y1), new Point(j, Y1 + H1));
+                if (j - Xoffset >= X1)
+                {
+                    pe.Graphics.DrawLine(ThinPen, new Point(j - Xoffset, Y1 + (H1 / 2) - 9), new Point(j - Xoffset, Y1 + (H1 / 2) + 9));
+                    pe.Graphics.DrawLine(ThinnestPen, new Point(j - Xoffset, Y1), new Point(j - Xoffset, Y1 + H1));
+                    if ((j - X1) % 250 == 0 && this.ReadOnly==false)
+                    {
+                        var secs = ((j - X1) / 50) + (ScrollOffset / 250) * 5;
+                        pe.Graphics.DrawString(secs.ToString(), MiniFont, SecondsBrush, new Point(j - (ScrollOffset % 250), Y1 + (H1 / 2)));
+                    }
+                }
             }
 
             pe.Graphics.DrawRectangle(BorderPen, new Rectangle(0, 0, this.Width - 1, this.Height - 1));
@@ -264,7 +305,7 @@ namespace PressControl
             }
 
             double x0 = X1;
-            int y0 = Convert.ToInt16(Y1 + (H1 / 2) - this.WaveData[0]);
+            int y0 = Convert.ToInt16(Y1 + (H1 / 2) - this.WaveData[0 + ScrollOffset]);
             for (var j = 0; j < this.Width - 1; j++)
             {
                 if ((j + ScrollOffset) >= this.WaveData.Count)
@@ -283,12 +324,20 @@ namespace PressControl
             {
                 if (this.Base.Playing)
                 {
-                    pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1), 0, Convert.ToInt32(DataXOffset + X1), H1);
-                    pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5), (H1 / 2) - 5 - DataYOffset, 10, 10);
+                    pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1 - ScrollOffset), 0, Convert.ToInt32(DataXOffset + X1 - ScrollOffset), H1);
+                    pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5 - ScrollOffset), (H1 / 2) - 5 - DataYOffset, 10, 10);
 
                     this.Base.WaveTime.Text = ts_timeElapsed.ToString();
                     this.Base.WaveValue.Text = DataYOffset.ToString();
                 }
+            }
+            else
+            {
+                DataXOffset = this.WaveData.Count;
+                DataYOffset = Convert.ToInt16(this.WaveData.Last());
+
+                pe.Graphics.DrawLine(TimePen, Convert.ToInt32(DataXOffset + X1), 0, Convert.ToInt32(DataXOffset + X1), H1);
+                pe.Graphics.FillEllipse(CursorPen, Convert.ToInt32(DataXOffset + X1 - 5), (H1 / 2) - 5 - DataYOffset, 10, 10);
             }
         }
 
@@ -297,16 +346,21 @@ namespace PressControl
            this.WaveData.Add(data);
             if (resetOnMax)
             {
-                if (this.WaveData.Count > this.Width)
+                if (this.WaveData.Count > this.Width - X1)
                 {
                     this.WaveData.Clear();
                 }
             }
+            this.Invoke((MethodInvoker)delegate
+            {
+                this.Refresh();
+            });
         }
 
-        private void scrollBar_Scroll(object sender, ScrollEventArgs e)
+       
+        private void scrollBarEx1_Scroll(object sender, ScrollEventArgs e)
         {
-            ScrollOffset = scrollBar.Value;
+            ScrollOffset = scrollBarEx1.Value;
             this.Refresh();
         }
     }
