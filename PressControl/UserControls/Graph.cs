@@ -90,7 +90,7 @@ namespace PressControl
         public void SetBase(App app, bool isReadOnly)
         {
             this.Base = app;
-            this.ReadOnly = isReadOnly;           
+            this.ReadOnly = isReadOnly;
         }
 
 
@@ -216,7 +216,7 @@ namespace PressControl
                     DataBuffer[0] = 0;
                     DataBuffer[1] = (byte)(DataYOffset + 110);
                     DataBuffer[2] = (byte)(this.Base.Playing == true ? 2 : 1);
-                    DataBuffer[3] = (byte)(this.Base.manuelBasinc.Value);
+                    DataBuffer[3] = (byte)(this.Base.manuelBasinc.Value + 110);
                     DataBuffer[4] = 255;
                     this.Base.DataPort.Write(DataBuffer, 0, 5);
                     //this.Base.RelayData(DataYOffset);
@@ -242,28 +242,30 @@ namespace PressControl
 
             if (this.WaveData.Count > this.Width - X1)
             {
-                if (this.DataXOffset <= (this.Width / 2))
+                if (this.Base.Playing)
                 {
-                    scrollBarEx1.Value = 0;
-                }
+                    if (this.DataXOffset <= (this.Width / 2))
+                    {
+                        scrollBarEx1.Value = 0;
+                    }
 
-                if (this.DataXOffset > (this.Width / 2))
-                {
-                    scrollBarEx1.Value = Convert.ToInt16(this.DataXOffset) - (this.Width / 2);
-                }
+                    if (this.DataXOffset > (this.Width / 2))
+                    {
+                        scrollBarEx1.Value = Convert.ToInt16(this.DataXOffset) - (this.Width / 2);
+                    }
 
-                if ( this.DataXOffset > (this.WaveData.Count - this.Width))
-                {
-                    scrollBarEx1.Value = this.WaveData.Count;
+                    if (this.DataXOffset > (this.WaveData.Count - this.Width))
+                    {
+                        scrollBarEx1.Value = this.WaveData.Count;
+                    }
                 }
-
                 scrollBarEx1.Left = 30;
                 scrollBarEx1.Width = this.Width - 32;
                 scrollBarEx1.Top = this.Height - 20;
                 scrollBarEx1.Visible = true;
                 scrollBarEx1.Minimum = 0;
                 scrollBarEx1.Maximum = this.WaveData.Count - this.Width - 1;
-                 //scrollBar.LargeChange = this.WaveData.Count - this.Width - 1;
+                //scrollBar.LargeChange = this.WaveData.Count - this.Width - 1;
             }
             else
             {
@@ -276,10 +278,10 @@ namespace PressControl
             pe.Graphics.DrawLine(ThinPen, new Point(X1, Y1 + (H1 / 2)), new Point(X2, Y1 + (H1 / 2)));
             // left labels
             pe.Graphics.DrawString("+100", MiniFont, Brush, new Point(X1 - 30, Y1));
-//            pe.Graphics.DrawString("0", MiniFont, Brush, new Point(X1 - 15, Y1 + (H1 / 2) - 7));
+            //            pe.Graphics.DrawString("0", MiniFont, Brush, new Point(X1 - 15, Y1 + (H1 / 2) - 7));
             pe.Graphics.DrawString("-100", MiniFont, Brush, new Point(X1 - 28, Y1 + H1 - 14));
             // ticks on timeline
-            for (var j = X1 ; j < X2 + 51 ; j = j + 50)
+            for (var j = X1; j < X2 + 51; j = j + 50)
             {
                 var Xoffset = (ScrollOffset % 50);
 
@@ -288,7 +290,7 @@ namespace PressControl
                 {
                     pe.Graphics.DrawLine(ThinPen, new Point(j - Xoffset, Y1 + (H1 / 2) - 9), new Point(j - Xoffset, Y1 + (H1 / 2) + 9));
                     pe.Graphics.DrawLine(ThinnestPen, new Point(j - Xoffset, Y1), new Point(j - Xoffset, Y1 + H1));
-                    if ((j - X1) % 250 == 0 && this.ReadOnly==false)
+                    if ((j - X1) % 250 == 0 && this.ReadOnly == false)
                     {
                         var secs = ((j - X1) / 50) + (ScrollOffset / 250) * 5;
                         pe.Graphics.DrawString(secs.ToString(), MiniFont, SecondsBrush, new Point(j - (ScrollOffset % 250), Y1 + (H1 / 2)));
@@ -343,12 +345,12 @@ namespace PressControl
 
         public void AddData(double data, bool resetOnMax = true)
         {
-           this.WaveData.Add(data);
+            this.WaveData.Add(data);
             if (resetOnMax)
             {
                 if (this.WaveData.Count > this.Width - X1)
                 {
-                    this.WaveData.Clear();
+                  this.WaveData.Clear();
                 }
             }
             this.Invoke((MethodInvoker)delegate
@@ -357,7 +359,7 @@ namespace PressControl
             });
         }
 
-       
+
         private void scrollBarEx1_Scroll(object sender, ScrollEventArgs e)
         {
             ScrollOffset = scrollBarEx1.Value;

@@ -438,8 +438,6 @@
 
         #endregion
 
-        private Graph graph1;
-        private Graph graph2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -472,6 +470,8 @@
         private System.Windows.Forms.ToolStripStatusLabel ConnectionStatus;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.NumericUpDown manuelBasinc;
+        public Graph graph1;
+        public Graph graph2;
 
     }
 }

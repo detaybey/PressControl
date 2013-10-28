@@ -49,11 +49,11 @@ namespace PressControl
             ConnectionTimer.Start();
 
             ReadTimer = new SuperTimer();
+            ReadTimer.Mode = TimerMode.Periodic;
             ReadTimer.Tick += ReadTimer_Tick;
             ReadTimer.Period = 20;
             ReadTimer.Resolution = 1;
-
-
+            ReadTimer.SynchronizingObject = this.graph1;
             DataPort.BaudRate = 57600;
         }
 
@@ -222,7 +222,7 @@ namespace PressControl
                     graph1.DataBuffer[0] = 0;
                     graph1.DataBuffer[1] = 0;
                     graph1.DataBuffer[2] = 1;
-                    graph1.DataBuffer[3] = (byte)(manuelBasinc.Value);
+                    graph1.DataBuffer[3] = (byte)(manuelBasinc.Value+110);
                     graph1.DataBuffer[4] = 255;
                     DataPort.Write(graph1.DataBuffer, 0, 5);
                 }
