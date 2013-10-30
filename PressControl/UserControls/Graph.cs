@@ -122,6 +122,7 @@ namespace PressControl
                     this.ReadData.Add(0);
                 }
                 this.Refresh();
+                Application.DoEvents();
             }
         }
 
@@ -171,6 +172,8 @@ namespace PressControl
         {
             this.DataXOffset = 0;
             this.Refresh();
+            Application.DoEvents();
+
             Timer.Stop();
         }
 
@@ -213,7 +216,7 @@ namespace PressControl
             endTime = DateTime.Now;
             ts_timeElapsed = (endTime - startTime);
             this.Refresh();
-
+            Application.DoEvents();
         }
 
         /// <summary>
@@ -342,6 +345,8 @@ namespace PressControl
             this.Invoke((MethodInvoker)delegate
             {
                 this.Refresh();
+                Application.DoEvents();
+
             });
         }
 
@@ -349,7 +354,8 @@ namespace PressControl
         private void scrollBarEx1_Scroll(object sender, ScrollEventArgs e)
         {
             ScrollOffset = scrollBarEx1.Value;
-            this.Refresh();
+//            this.Refresh();
+//            Application.DoEvents();
         }
     }
 
